@@ -1,10 +1,10 @@
 {:paths ["src" "resources"]
  :deps  {org.clojure/clojure   {:mvn/version "1.10.1"}
          ;martian             {:mvn/version "0.1.12"}
-         martian               {:git/url "https://github.com/gaberger/martian"
-                                :sha "a42febc7d1edd94bf7f07499b7b2d2846f987045"}
+         gaberger/martian-core               {:git/url "https://github.com/gaberger/martian-core"
+                                              :sha "2eae5c7b6b1ffd08fc6a064ebe08998289f4a34f"}
          gaberger/martian-clj-http-lite {:git/url "https://github.com/gaberger/martian-clj-http-lite"
-                                :sha "1c8decfdd2884f4a89c36aaffb5f4cd3fe95d110"}
+                                         :sha "1c8decfdd2884f4a89c36aaffb5f4cd3fe95d110"}
          slingshot             {:mvn/version "0.12.2"}
          com.taoensso/timbre   {:mvn/version "4.10.0"}
          ;garyberger.martian/clj-http-lite {:mvn/version "0.1.13-SNAPSHOT"}
@@ -12,20 +12,19 @@
          ;clj-http-fwd                     {:mvn/version "0.1.0"}
          ;gaberger/clj-http-lite   {:git/url "https://github.com/gaberger/clj-http-lite"
          ;                          :sha     "7c5f87c6bd69904eb25ec5c233feb1c05f7aab2e"}
-
          }
  :aliases
-        {:test    {:extra-paths ["test"]
-                   :extra-deps  {org.clojure/test.check {:mvn/version "1.0.0"}}}
-         :runner
-                  {:extra-deps {com.cognitect/test-runner
-                                {:git/url "https://github.com/cognitect-labs/test-runner"
-                                 :sha     "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
-                   :main-opts  ["-m" "cognitect.test-runner"
-                                "-d" "test"]}
-         :jar     {:extra-deps {seancorfield/depstar {:mvn/version "1.0.94"}}
-                   :main-opts  ["-m" "hf.depstar.jar" "clj-forward-0.0.1.jar"]}
-         :install {:extra-deps {deps-deploy {:mvn/version "0.0.9"}}
-                   :main-opts  ["-m" "deps-deploy.deps-deploy" "install" "clj-forward-0.0.1.jar"]}
-         :deploy  {:extra-deps {deps-deploy {:mvn/version "0.0.9"}}
-                   :main-opts  ["-m" "deps-deploy.deps-deploy" "deploy" "clj-forward-0.0.1.jar"]}}}
+ {:test    {:extra-paths ["test"]
+            :extra-deps  {org.clojure/test.check {:mvn/version "1.0.0"}}}
+  :runner
+  {:extra-deps {com.cognitect/test-runner
+                {:git/url "https://github.com/cognitect-labs/test-runner"
+                 :sha     "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
+   :main-opts  ["-m" "cognitect.test-runner"
+                "-d" "test"]}
+  :jar     {:extra-deps {seancorfield/depstar {:mvn/version "1.0.94"}}
+            :main-opts  ["-m" "hf.depstar.jar" "clj-forward-0.0.1.jar"]}
+  :install {:extra-deps {deps-deploy {:mvn/version "0.0.9"}}
+            :main-opts  ["-m" "deps-deploy.deps-deploy" "install" "clj-forward-0.0.1.jar"]}
+  :deploy  {:extra-deps {deps-deploy {:mvn/version "0.0.9"}}
+            :main-opts  ["-m" "deps-deploy.deps-deploy" "deploy" "clj-forward-0.0.1.jar"]}}}
