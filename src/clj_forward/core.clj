@@ -16,15 +16,15 @@
   {:name  ::add-authentication-header
    :enter (fn [ctx]
             (-> ctx
-                            (assoc-in [:request :headers "Authorization"] (str "Basic:" (utils/encode (str user ":" password))))
-                            (assoc-in [:request :debug] debug)
-                            (assoc-in [:request :insecure?] insecure?)
-                        ))})
+                (assoc-in [:request :headers "Authorization"] (str "Basic:" (utils/encode (str user ":" password))))
+                (assoc-in [:request :debug] debug)
+                (assoc-in [:request :insecure?] insecure?)
+                ))})
 
 
 (defn create-fwd-context [{:keys [swagger user password debug insecure?]
-                           :or {:debug false
-                                :insecure? false}}]
+                           :or   {debug     false
+                                  insecure? false}}]
   (let [default-interceptors (concat martian/default-interceptors [(add-custom-header user password debug insecure?)
                                                                    interceptors/default-encode-body
                                                                    interceptors/default-coerce-response

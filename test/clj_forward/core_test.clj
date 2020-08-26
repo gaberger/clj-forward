@@ -729,14 +729,16 @@
 
 (deftest explore-test-8
   (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
-    (is (= {:debug     true
-            :headers   {"Authorization" "Basic:Zm9yd2FyZDpmb3J3YXJk"}
-            :insecure? true
+    (is (= {:as        :text
+            :debug     false
+            :headers   {"Accept"        "application/json"
+                        "Authorization" "Basic:Zm9yd2FyZDpmb3J3YXJk"}
+            :insecure? false
             :method    :get
             :url       "https://scaling605:8443/api/snapshots/549/topology"}
            (request-for api :get-topology-using-get {:snapshotId "549"})))))
 
-(deftest explore-test-9
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
-    (is (= []
-           (response-for api :get-networks-using-get)))))
+;(deftest explore-test-9
+;  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+;    (is (= []
+;           (response-for api :get-networks-using-get)))))
