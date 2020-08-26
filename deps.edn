@@ -2,7 +2,7 @@
  :deps  {org.clojure/clojure   {:mvn/version "1.10.1"}
          ;martian             {:mvn/version "0.1.12"}
          martian               {:git/url "https://github.com/gaberger/martian"
-                                :sha "b0c2f7e5a6f9f23b866b49a8b1a26500209dce84"}
+                                :sha "a42febc7d1edd94bf7f07499b7b2d2846f987045"}
          gaberger/martian-clj-http-lite {:git/url "https://github.com/gaberger/martian-clj-http-lite"
                                 :sha "1c8decfdd2884f4a89c36aaffb5f4cd3fe95d110"}
          slingshot             {:mvn/version "0.12.2"}
