@@ -32,12 +32,6 @@
     (martian-http/bootstrap-swagger swagger
                                     {
                                      :interceptors default-interceptors
-                                     ;(concat
-                                     ;                [(add-authentication-header user password)
-                                     ;                 martian-http/perform-request]
-                                     ;                martian/default-interceptors)
-                                     ;;(perform-request  {:insecure? true})
-                                     ;#(martian-http/perform-request (merge % {:insecure? true}))
                                      :http-opts    {:insecure?  true
                                                     :basic-auth (str user ":" password)}})))
 
