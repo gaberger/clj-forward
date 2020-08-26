@@ -1,6 +1,6 @@
 {:paths ["src" "resources"]
- :deps  {org.clojure/clojure            {:mvn/version "1.10.1"}
-         gaberger/martian-core          {:git/url "https://github.com/gaberger/martian-core"
+ :deps  {
+         gaberger/martian               {:git/url "https://github.com/gaberger/martian-core"
                                          :sha     "2eae5c7b6b1ffd08fc6a064ebe08998289f4a34f"}
          gaberger/martian-clj-http-lite {:git/url "https://github.com/gaberger/martian-clj-http-lite"
                                          :sha     "1c8decfdd2884f4a89c36aaffb5f4cd3fe95d110"}
