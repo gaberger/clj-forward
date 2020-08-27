@@ -49,7 +49,6 @@
             :patch-l-2-vpn-using-patch
             :delete-l-3-vpn-edge-port-using-delete
             :get-paths-bulk-using-post
-            :get-predefined-checks-using-get
             :zip-snapshot-using-get
             :delete-snapshot-using-delete
             :get-snapshot-metrics-using-get
@@ -119,7 +118,6 @@
             "Updates an L2VPN"
             "Removes a connection from an L3VPN"
             "Searches for paths by tracing sets of packets through the network"
-            "Gets available predefined checks"
             "Exports a Snapshot"
             "Deletes a Snapshot"
             "Returns the metrics of a Snapshot"
@@ -248,12 +246,6 @@
                       :l-2-vpn-name]
             :sub     "show"
             :summary "Gets an L2VPN"
-            :verb    "get"}
-           {:base    :get-predefined-checks-using-get
-            :command "predefined-checks"
-            :param   [:snapshot-id]
-            :sub     "show"
-            :summary "Gets available predefined checks"
             :verb    "get"}
            {:base    :zip-snapshot-using-get
             :command "snapshot"
@@ -491,10 +483,6 @@
              :command "paths-bulk"
              :sub     "post"
              :verb    "post"}
-            {:base    :get-predefined-checks-using-get
-             :command "predefined-checks"
-             :sub     "show"
-             :verb    "get"}
             {:base    :zip-snapshot-using-get
              :command "snapshot"
              :sub     "show"
@@ -672,8 +660,6 @@
              "Removes a connection from an L3VPN"]
             [:get-paths-bulk-using-post
              "Searches for paths by tracing sets of packets through the network"]
-            [:get-predefined-checks-using-get
-             "Gets available predefined checks"]
             [:zip-snapshot-using-get
              "Exports a Snapshot"]
             [:delete-snapshot-using-delete
