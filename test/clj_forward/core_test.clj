@@ -903,4 +903,4 @@
     (is (= "https://foobar:8443"
            (-> (bootstrap-openapi "https://foobar:8443" (parse-string (slurp (io/resource "api.json")))
                               {:interceptors default-interceptors})
-               :api-root)))))
+               #_:api-root)))))
