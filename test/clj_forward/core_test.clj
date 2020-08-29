@@ -3,79 +3,150 @@
             [clj-forward.core :refer :all]
             [schema.core :refer :all :exclude [atom fn Inst defn defmethod letfn defrecord]]
             [clojure.pprint :as pprint]
-            [taoensso.timbre :as timbre]))
+            [martian.core :refer [bootstrap bootstrap-openapi]]
+            [cheshire.core :refer [parse-string]]
+            [taoensso.timbre :as timbre]
+            [clojure.java.io :as io]
+            [martian.core :as martian]
+            [martian.interceptors :as interceptors]
+            [martian.clj-http-lite :as martian-http]))
+
 
 (deftest explore-test-1
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
-    (is (= [:get-device-credentials-using-get
-            :create-device-credential-using-post
-            :delete-device-credential-using-delete
-            :patch-device-credential-using-patch
-            :collect-using-post
-            :get-network-layout-using-get
-            :set-network-layout-using-post
-            :get-l-3-vpn-using-get
-            :put-l-3-vpn-using-put
-            :delete-l-3-vpn-using-delete
-            :patch-l-3-vpn-using-patch
-            :delete-l-2-vpn-connection-using-delete
-            :get-device-sources-using-get
-            :add-or-update-device-sources-using-post
-            :cancel-collect-using-post
-            :get-single-check-using-get
-            :deactivate-check-using-delete
-            :add-l-2-vpn-connection-using-post
-            :delete-network-using-delete
-            :update-network-using-patch
-            :get-l-3-vpns-using-get
-            :put-l-3-vpns-using-put
-            :get-device-file-content-using-get
-            :get-networks-using-get
-            :create-network-using-post
-            :update-device-source-using-put
-            :delete-device-source-using-delete
-            :get-collector-state-using-get
-            :get-checks-using-get
-            :add-check-using-post
-            :deactivate-checks-using-delete
-            :get-jump-servers-using-get
-            :create-jump-server-using-post
-            :get-latest-processed-snapshot-using-get
-            :list-network-snapshots-using-get
-            :create-snapshot-using-post
-            :get-l-2-vpn-using-get
-            :put-l-2-vpn-using-put
-            :delete-l-2-vpn-using-delete
-            :patch-l-2-vpn-using-patch
-            :delete-l-3-vpn-edge-port-using-delete
-            :get-paths-bulk-using-post
-            :zip-snapshot-using-get
-            :delete-snapshot-using-delete
-            :get-snapshot-metrics-using-get
-            :get-device-files-using-get
-            :get-paths-using-get
-            :set-network-topo-list-using-put
-            :run-nqe-query-using-post
-            :get-snapshot-topo-overrides-using-get
-            :post-snapshot-topo-overrides-using-post
-            :put-snapshot-topo-overrides-using-put
-            :get-trace-paths-bulk-seq-using-post
-            :get-single-alias-using-get
-            :create-snapshot-alias-using-put
-            :deactivate-alias-using-delete
-            :get-topology-using-get
-            :get-l-2-vpns-using-get
-            :put-l-2-vpns-using-put
-            :get-all-aliases-using-get
-            :get-available-predefined-checks-using-get
-            :delete-jump-server-using-delete
-            :edit-jump-server-using-patch
-            :add-l-3-vpn-connection-using-post]
-           (mapv first (explore api))))))
-
+  (is (= [[:get-device-credentials-using-get
+           "Lists a network’s device credentials"]
+          [:create-device-credential-using-post
+           "Creates or replaces a network device credential"]
+          [:delete-device-credential-using-delete
+           "Deletes a network device credential"]
+          [:patch-device-credential-using-patch
+           "Updates a network device credential"]
+          [:collect-using-post
+           "Triggers a network collection"]
+          [:get-network-layout-using-get
+           "Gets the network layout"]
+          [:set-network-layout-using-post
+           "Updates the network layout"]
+          [:get-l-3-vpn-using-get
+           "Gets an L3VPN"]
+          [:put-l-3-vpn-using-put
+           "Adds or replaces an L3VPN"]
+          [:delete-l-3-vpn-using-delete
+           "Removes an L3VPN"]
+          [:patch-l-3-vpn-using-patch
+           "Updates an L3VPN"]
+          [:delete-l-2-vpn-connection-using-delete
+           "Removes a connection from an L2VPN"]
+          [:get-device-sources-using-get
+           "Gets a network’s device sources"]
+          [:add-or-update-device-sources-using-post
+           "Creates or updates network device sources"]
+          [:cancel-collect-using-post
+           "Cancels an in-progress network collection"]
+          [:get-single-check-using-get
+           "Gets a check (with status)"]
+          [:deactivate-check-using-delete
+           "Deactivates a check"]
+          [:add-l-2-vpn-connection-using-post
+           "Adds a connection to an L2VPN"]
+          [:delete-network-using-delete
+           "Deletes a network"]
+          [:update-network-using-patch
+           "Renames a network"]
+          [:get-l-3-vpns-using-get
+           "Gets a network’s L3VPNs"]
+          [:put-l-3-vpns-using-put
+           "Replaces all of a network’s L3VPNs"]
+          [:get-device-file-content-using-get
+           "Gets device data file content"]
+          [:get-networks-using-get
+           "Lists all networks"]
+          [:create-network-using-post
+           "Creates a network"]
+          [:update-device-source-using-put
+           "Creates or replaces a network device source"]
+          [:delete-device-source-using-delete
+           "Deletes a network device source"]
+          [:get-collector-state-using-get
+           "Gets the status of a network’s collector"]
+          [:get-checks-using-get
+           "Gets checks (with status)"]
+          [:add-check-using-post
+           "Adds a check"]
+          [:deactivate-checks-using-delete
+           "Deactivates all checks"]
+          [:get-jump-servers-using-get
+           "Lists a network’s jump servers"]
+          [:create-jump-server-using-post
+           "Creates or replaces a jump server"]
+          [:get-latest-processed-snapshot-using-get
+           "Returns the latest processed Snapshot"]
+          [:list-network-snapshots-using-get
+           "Lists all Snapshots"]
+          [:create-snapshot-using-post
+           "Imports a Snapshot"]
+          [:get-l-2-vpn-using-get
+           "Gets an L2VPN"]
+          [:put-l-2-vpn-using-put
+           "Adds or replaces an L2VPN"]
+          [:delete-l-2-vpn-using-delete
+           "Removes an L2VPN"]
+          [:patch-l-2-vpn-using-patch
+           "Updates an L2VPN"]
+          [:delete-l-3-vpn-edge-port-using-delete
+           "Removes a connection from an L3VPN"]
+          [:get-paths-bulk-using-post
+           "Searches for paths by tracing sets of packets through the network"]
+          [:zip-snapshot-using-get
+           "Exports a Snapshot"]
+          [:delete-snapshot-using-delete
+           "Deletes a Snapshot"]
+          [:get-snapshot-metrics-using-get
+           "Returns the metrics of a Snapshot"]
+          [:get-device-files-using-get
+           "Lists a device’s data files"]
+          [:get-paths-using-get
+           "Searches for paths by tracing packets through the network"]
+          [:set-network-topo-list-using-put
+           "Sets the topology overrides"]
+          [:run-nqe-query-using-post
+           "Runs an NQE query on a Snapshot."]
+          [:get-snapshot-topo-overrides-using-get
+           "Gets the topology overrides"]
+          [:post-snapshot-topo-overrides-using-post
+           "Edits the topology overrides"]
+          [:put-snapshot-topo-overrides-using-put
+           "Sets the topology overrides"]
+          [:get-trace-paths-bulk-seq-using-post
+           "Searches for paths by tracing sets of packets through the network"]
+          [:get-single-alias-using-get
+           "Gets an Alias"]
+          [:create-snapshot-alias-using-put
+           "Creates an Alias"]
+          [:deactivate-alias-using-delete
+           "Deletes an Alias"]
+          [:get-topology-using-get
+           "Gets the network topology"]
+          [:get-l-2-vpns-using-get
+           "Gets a network’s L2VPNs"]
+          [:put-l-2-vpns-using-put
+           "Replaces all of a network’s L2VPNs"]
+          [:get-all-aliases-using-get
+           "Gets all Aliases"]
+          [:get-available-predefined-checks-using-get
+           "Gets available Predefined checks"]
+          [:delete-jump-server-using-delete
+           "Deletes a jump server"]
+          [:edit-jump-server-using-patch
+           "Updates a jump server"]
+          [:add-l-3-vpn-connection-using-post
+           "Adds a connection to an L3VPN"]]
+         (->
+           (bootstrap-openapi "https://scale605:8443" (parse-string (slurp (io/resource "api.json"))))
+           explore))))
 
 (deftest explore-test-2
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [api (bootstrap-openapi "https://scale605:8443" (parse-string (slurp (io/resource "api.json"))))]
     (is (= ["Lists a network’s device credentials"
             "Creates or replaces a network device credential"
             "Deletes a network device credential"
@@ -143,19 +214,83 @@
            (mapv second (explore api))))))
 
 
+
+(deftest explore-test-2
+  (let [martian (bootstrap-openapi "https://scale605:8443" (parse-string (slurp (io/resource "api.json"))))
+        api (mapv first (explore martian))]
+    (is (= [{:parameters {:network-id java.lang.String}
+             :returns    {200 [{#schema.core.OptionalKey{:k :content}  (maybe
+                                                                         Str)
+                                #schema.core.OptionalKey{:k :id}       (maybe
+                                                                         Str)
+                                #schema.core.OptionalKey{:k :name}     (maybe
+                                                                         Str)
+                                #schema.core.OptionalKey{:k :password} (maybe
+                                                                         Str)
+                                #schema.core.OptionalKey{:k :type}     (maybe
+                                                                         (enum
+                                                                           "LOGIN"
+                                                                           "SHELL"
+                                                                           "KEY_STORE"
+                                                                           "PRIVILEGED_MODE"
+                                                                           "OPENFLOW_TRUST_STORE"
+                                                                           "OPENFLOW_KEY_STORE"))
+                                #schema.core.OptionalKey{:k :username} (maybe
+                                                                         Str)}]}
+             :summary    "Lists a network’s device credentials"}
+            {:parameters {:device-credential {#schema.core.OptionalKey{:k :content}  (maybe
+                                                                                       Str)
+                                              #schema.core.OptionalKey{:k :id}       (maybe
+                                                                                       Str)
+                                              #schema.core.OptionalKey{:k :name}     (maybe
+                                                                                       Str)
+                                              #schema.core.OptionalKey{:k :password} (maybe
+                                                                                       Str)
+                                              #schema.core.OptionalKey{:k :type}     (maybe
+                                                                                       (enum
+                                                                                         "LOGIN"
+                                                                                         "SHELL"
+                                                                                         "KEY_STORE"
+                                                                                         "PRIVILEGED_MODE"
+                                                                                         "OPENFLOW_TRUST_STORE"
+                                                                                         "OPENFLOW_KEY_STORE"))
+                                              #schema.core.OptionalKey{:k :username} (maybe
+                                                                                       Str)}
+                          :network-id        java.lang.String}
+             :returns    {200 {#schema.core.OptionalKey{:k :content}  (maybe
+                                                                        Str)
+                               #schema.core.OptionalKey{:k :id}       (maybe
+                                                                        Str)
+                               #schema.core.OptionalKey{:k :name}     (maybe
+                                                                        Str)
+                               #schema.core.OptionalKey{:k :password} (maybe
+                                                                        Str)
+                               #schema.core.OptionalKey{:k :type}     (maybe
+                                                                        (enum
+                                                                          "LOGIN"
+                                                                          "SHELL"
+                                                                          "KEY_STORE"
+                                                                          "PRIVILEGED_MODE"
+                                                                          "OPENFLOW_TRUST_STORE"
+                                                                          "OPENFLOW_KEY_STORE"))
+                               #schema.core.OptionalKey{:k :username} (maybe
+                                                                        Str)}}
+             :summary    "Creates or replaces a network device credential"}]
+           (take 2 (mapv #(explore martian %) api))))))
+
 (deftest explore-test-3
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})
+  (let [api (create-fwd-context {:target "https://scaling605:8443" :user "forward" :password "forward"})
         v (mapv first (explore api))]
     (is (= 23
            (.indexOf v :get-networks-using-get)))))
 
 (deftest explore-test-4
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [api (create-fwd-context {:target "https://scaling605" :user "forward" :password "forward"})]
     (is (= "Lists all networks"
            (get-description :get-networks-using-get api)))))
 
 (deftest explore-test-5
-  (let [martian (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [martian (create-fwd-context {:target "https://scaling605" :user "forward" :password "forward"})]
     (is (=
           [{:base    :get-device-credentials-using-get
             :command "device-credentials"
@@ -314,7 +449,7 @@
           (get-command "show" martian)))))
 
 (deftest explore-test-6
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [api (create-fwd-context {:target "https://scaling605:8443" :user "forward" :password "forward"})]
     (is (= [{:base    :get-device-credentials-using-get
              :command "device-credentials"
              :sub     "show"
@@ -575,7 +710,7 @@
 
 
 (deftest explore-test-7
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [api (create-fwd-context {:target "https://scaling605:8443" :user "forward" :password "forward"})]
     (is (= [[:get-device-credentials-using-get
              "Lists a network’s device credentials"]
             [:create-device-credential-using-post
@@ -714,7 +849,7 @@
 ;                           :password "forward"}))))
 
 (deftest explore-test-8
-  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
+  (let [api (create-fwd-context {:target "https://scaling605:8443" :user "forward" :password "forward"})]
     (is (= {:as        :text
             :debug     false
             :headers   {"Accept"        "application/json"
@@ -728,3 +863,44 @@
 ;  (let [api (create-fwd-context {:swagger "https://scaling605:8443/swagger/api.json" :user "forward" :password "forward"})]
 ;    (is (= []
 ;           (response-for api :get-networks-using-get)))))
+
+(deftest explore-test-9
+  (let [default-interceptors (concat martian/default-interceptors [(add-custom-header "forward" "forwrd" true true)
+                                                                   interceptors/default-encode-body
+                                                                   interceptors/default-coerce-response
+                                                                   martian-http/perform-request])
+        martian (bootstrap-openapi "https://scaling605:8443" (parse-string (slurp (io/resource "api.json")))
+                                   {:interceptors default-interceptors})]
+    (is (= {:as        :text
+            :debug     true
+            :headers   {"Accept"        "application/json"
+                        "Authorization" "Basic:Zm9yd2FyZDpmb3J3cmQ="}
+            :insecure? true
+            :method    :get
+            :url       "https://scaling605:8443/api/networks"}
+           (request-for martian :get-networks-using-get)))))
+
+(deftest explore-test-10
+  (let [default-interceptors (concat martian/default-interceptors [(add-custom-header "forward" "forward" true true)
+                                                                   interceptors/default-encode-body
+                                                                   interceptors/default-coerce-response
+                                                                   martian-http/perform-request])
+        martian (bootstrap-openapi "https://scaling605:8443" (parse-string (slurp (io/resource "api.json")))
+                                   {:interceptors default-interceptors})]
+    (is (= {:creatorId "100"
+            :id        "129"
+            :name      "Obuscation+"
+            :orgId     "100"}
+           (first (:body (response-for martian :get-networks-using-get)))))
+
+    ))
+
+(deftest explore-test-11
+  (let [default-interceptors (concat martian/default-interceptors [(add-custom-header "forward" "forward" true true)
+                                                                   interceptors/default-encode-body
+                                                                   interceptors/default-coerce-response
+                                                                   martian-http/perform-request])]
+    (is (= "https://foobar:8443"
+           (-> (bootstrap-openapi "https://foobar:8443" (parse-string (slurp (io/resource "api.json")))
+                              {:interceptors default-interceptors})
+               :api-root)))))

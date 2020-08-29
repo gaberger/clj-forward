@@ -6,7 +6,10 @@
             [clojure.pprint :as pprint]
             [clojure.string :as str]
             [taoensso.timbre :as timbre]
-            [martian.interceptors :as interceptors]))
+            [cheshire.core :refer [parse-string]]
+            [martian.core :as martian]
+            [martian.interceptors :as interceptors]
+            [clojure.java.io :as io]))
 
 (timbre/refer-timbre)
 (timbre/merge-config! {:appenders {:println {:enabled? true}}})
@@ -22,18 +25,18 @@
                 ))})
 
 
-(defn create-fwd-context [{:keys [swagger user password debug insecure?]
+(defn create-fwd-context [{:keys [target user password debug insecure?]
                            :or   {debug     false
                                   insecure? false}}]
   (let [default-interceptors (concat martian/default-interceptors [(add-custom-header user password debug insecure?)
                                                                    interceptors/default-encode-body
                                                                    interceptors/default-coerce-response
                                                                    martian-http/perform-request])]
-    (martian-http/bootstrap-swagger swagger
-                                    {
-                                     :interceptors default-interceptors
-                                     :http-opts    {:insecure?  true
-                                                    :basic-auth (str user ":" password)}})))
+
+    (martian/bootstrap-openapi target (parse-string (slurp (io/resource "api.json")))
+                               {:interceptors default-interceptors})))
+
+
 
 (def explore martian/explore)
 (def request-for martian/request-for)
