@@ -282,193 +282,170 @@
 
 (deftest explore-test-3
   (let [martian (bootstrap-openapi "FOOBAR" (parse-string (slurp (io/resource "api.json"))))]
-    (is (= [{:base      :get-device-credentials-using-get
-             :command   "device-credentials"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Lists a network’s device credentials"
-             :verb      "get"}
-            {:base      :get-network-layout-using-get
-             :command   "network-layout"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Gets the network layout"
-             :verb      "get"}
-            {:base      :get-l-3-vpn-using-get
-             :command   "l-3-vpn"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :l-3-vpn-name]
-             :sub       "show"
-             :summary   "Gets an L3VPN"
-             :verb      "get"}
-            {:base      :get-device-sources-using-get
-             :command   "device-sources"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Gets a network’s device sources"
-             :verb      "get"}
-            {:base      :get-single-check-using-get
-             :command   "single-check"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :check-id]
-             :sub       "show"
-             :summary   "Gets a check (with status)"
-             :verb      "get"}
-            {:base      :get-l-3-vpns-using-get
-             :command   "l-3-vpns"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Gets a network’s L3VPNs"
-             :verb      "get"}
-            {:base      :get-device-file-content-using-get
-             :command   "device-file-content"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :device-name
-                         :file-name]
-             :sub       "show"
-             :summary   "Gets device data file content"
-             :verb      "get"}
-            {:base      :get-networks-using-get
-             :command   "networks"
-             :param-opt []
-             :param-req []
-             :sub       "show"
-             :summary   "Lists all networks"
-             :verb      "get"}
-            {:base      :get-collector-state-using-get
-             :command   "collector-state"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Gets the status of a network’s collector"
-             :verb      "get"}
-            {:base      :get-checks-using-get
-             :command   "checks"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :type]
-             :sub       "show"
-             :summary   "Gets checks (with status)"
-             :verb      "get"}
-            {:base      :get-jump-servers-using-get
-             :command   "jump-servers"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Lists a network’s jump servers"
-             :verb      "get"}
-            {:base      :get-latest-processed-snapshot-using-get
-             :command   "latest-processed-snapshot"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Returns the latest processed Snapshot"
-             :verb      "get"}
-            {:base      :list-network-snapshots-using-get
-             :command   "network-snapshots"
-             :param-opt []
-             :param-req [:network-id]
-             :sub       "show"
-             :summary   "Lists all Snapshots"
-             :verb      "get"}
-            {:base      :get-l-2-vpn-using-get
-             :command   "l-2-vpn"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :l-2-vpn-name]
-             :sub       "show"
-             :summary   "Gets an L2VPN"
-             :verb      "get"}
-            {:base      :zip-snapshot-using-get
-             :command   "snapshot"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Exports a Snapshot"
-             :verb      "get"}
-            {:base      :get-snapshot-metrics-using-get
-             :command   "snapshot-metrics"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Returns the metrics of a Snapshot"
-             :verb      "get"}
-            {:base      :get-device-files-using-get
-             :command   "device-files"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :device-name]
-             :sub       "show"
-             :summary   "Lists a device’s data files"
-             :verb      "get"}
-            {:base      :get-paths-using-get
-             :command   "paths"
-             :param-opt [:max-seconds
-                         :max-return-path-results
-                         :dst-port
-                         :include-network-functions
-                         :intent
-                         :max-candidates
-                         :src-port
-                         :ip-proto
-                         :max-results
-                         :icmp-type]
-             :param-req [:snapshot-id
-                         :src-ip
-                         :dst-ip]
-             :sub       "show"
-             :summary   "Searches for paths by tracing packets through the network"
-             :verb      "get"}
-            {:base      :get-snapshot-topo-overrides-using-get
-             :command   "snapshot-topo-overrides"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Gets the topology overrides"
-             :verb      "get"}
-            {:base      :get-single-alias-using-get
-             :command   "single-alias"
-             :param-opt []
-             :param-req [:snapshot-id
-                         :alias-name]
-             :sub       "show"
-             :summary   "Gets an Alias"
-             :verb      "get"}
-            {:base      :get-topology-using-get
-             :command   "topology"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Gets the network topology"
-             :verb      "get"}
-            {:base      :get-l-2-vpns-using-get
-             :command   "l-2-vpns"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Gets a network’s L2VPNs"
-             :verb      "get"}
-            {:base      :get-all-aliases-using-get
-             :command   "all-aliases"
-             :param-opt []
-             :param-req [:snapshot-id]
-             :sub       "show"
-             :summary   "Gets all Aliases"
-             :verb      "get"}
-            {:base      :get-available-predefined-checks-using-get
-             :command   "available-predefined-checks"
-             :param-opt []
-             :param-req []
-             :sub       "show"
-             :summary   "Gets available Predefined checks"
-             :verb      "get"}]
+    (is (= [{:base    :get-device-credentials-using-get
+              :command "device-credentials"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Lists a network’s device credentials"
+              :verb    "get"}
+             {:base    :get-network-layout-using-get
+              :command "network-layout"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Gets the network layout"
+              :verb    "get"}
+             {:base    :get-l-3-vpn-using-get
+              :command "l-3-vpn"
+              :params  [{:required :snapshot-id}
+                        {:required :l-3-vpn-name}]
+              :sub     "show"
+              :summary "Gets an L3VPN"
+              :verb    "get"}
+             {:base    :get-device-sources-using-get
+              :command "device-sources"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Gets a network’s device sources"
+              :verb    "get"}
+             {:base    :get-single-check-using-get
+              :command "single-check"
+              :params  [{:required :snapshot-id}
+                        {:required :check-id}]
+              :sub     "show"
+              :summary "Gets a check (with status)"
+              :verb    "get"}
+             {:base    :get-l-3-vpns-using-get
+              :command "l-3-vpns"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Gets a network’s L3VPNs"
+              :verb    "get"}
+             {:base    :get-device-file-content-using-get
+              :command "device-file-content"
+              :params  [{:required :snapshot-id}
+                        {:required :device-name}
+                        {:required :file-name}]
+              :sub     "show"
+              :summary "Gets device data file content"
+              :verb    "get"}
+             {:base    :get-networks-using-get
+              :command "networks"
+              :params  []
+              :sub     "show"
+              :summary "Lists all networks"
+              :verb    "get"}
+             {:base    :get-collector-state-using-get
+              :command "collector-state"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Gets the status of a network’s collector"
+              :verb    "get"}
+             {:base    :get-checks-using-get
+              :command "checks"
+              :params  [{:required :snapshot-id}
+                        {:required :type}]
+              :sub     "show"
+              :summary "Gets checks (with status)"
+              :verb    "get"}
+             {:base    :get-jump-servers-using-get
+              :command "jump-servers"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Lists a network’s jump servers"
+              :verb    "get"}
+             {:base    :get-latest-processed-snapshot-using-get
+              :command "latest-processed-snapshot"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Returns the latest processed Snapshot"
+              :verb    "get"}
+             {:base    :list-network-snapshots-using-get
+              :command "network-snapshots"
+              :params  [{:required :network-id}]
+              :sub     "show"
+              :summary "Lists all Snapshots"
+              :verb    "get"}
+             {:base    :get-l-2-vpn-using-get
+              :command "l-2-vpn"
+              :params  [{:required :snapshot-id}
+                        {:required :l-2-vpn-name}]
+              :sub     "show"
+              :summary "Gets an L2VPN"
+              :verb    "get"}
+             {:base    :zip-snapshot-using-get
+              :command "snapshot"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Exports a Snapshot"
+              :verb    "get"}
+             {:base    :get-snapshot-metrics-using-get
+              :command "snapshot-metrics"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Returns the metrics of a Snapshot"
+              :verb    "get"}
+             {:base    :get-device-files-using-get
+              :command "device-files"
+              :params  [{:required :snapshot-id}
+                        {:required :device-name}]
+              :sub     "show"
+              :summary "Lists a device’s data files"
+              :verb    "get"}
+             {:base    :get-paths-using-get
+              :command "paths"
+              :params  [{:required :snapshot-id}
+                        {:required :src-ip}
+                        {:required :dst-ip}
+                        {:optional :max-seconds}
+                        {:optional :max-return-path-results}
+                        {:optional :dst-port}
+                        {:optional :include-network-functions}
+                        {:optional :intent}
+                        {:optional :max-candidates}
+                        {:optional :src-port}
+                        {:optional :ip-proto}
+                        {:optional :max-results}
+                        {:optional :icmp-type}]
+              :sub     "show"
+              :summary "Searches for paths by tracing packets through the network"
+              :verb    "get"}
+             {:base    :get-snapshot-topo-overrides-using-get
+              :command "snapshot-topo-overrides"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Gets the topology overrides"
+              :verb    "get"}
+             {:base    :get-single-alias-using-get
+              :command "single-alias"
+              :params  [{:required :snapshot-id}
+                        {:required :alias-name}]
+              :sub     "show"
+              :summary "Gets an Alias"
+              :verb    "get"}
+             {:base    :get-topology-using-get
+              :command "topology"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Gets the network topology"
+              :verb    "get"}
+             {:base    :get-l-2-vpns-using-get
+              :command "l-2-vpns"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Gets a network’s L2VPNs"
+              :verb    "get"}
+             {:base    :get-all-aliases-using-get
+              :command "all-aliases"
+              :params  [{:required :snapshot-id}]
+              :sub     "show"
+              :summary "Gets all Aliases"
+              :verb    "get"}
+             {:base    :get-available-predefined-checks-using-get
+              :command "available-predefined-checks"
+              :params  []
+              :sub     "show"
+              :summary "Gets available Predefined checks"
+              :verb    "get"}]
            (get-command "show" martian)))))
 
 (deftest explore-test-4

@@ -71,12 +71,13 @@
                :when (= (:sub m) k)
                :let [model (explore martian (:base m))
                      params (get-in model [:parameters])
-                     params-req-ks (filterv #(not= (type %) OptionalKey) (vec (keys params)))
-                     params-opt-ks (let [v (filterv #(= (type %) OptionalKey) (vec (keys params)))]
-                                     (mapv #(.-k %) v))
+                     req-params (let [v (filterv #(not= (type %) OptionalKey) (vec (keys params)))]
+                                  (mapv #(assoc {} :required %) v))
+                     opt-params (let [v (filterv #(= (type %) OptionalKey) (vec (keys params)))]
+                                  (mapv #(assoc {} :optional (.-k %)) v))
+                     out-params (vec (concat req-params opt-params))
                      ]]
-           (assoc m :base (:base m) :param-req params-req-ks :param-opt params-opt-ks :summary (:summary model))
-           ))))
+           (assoc m :base (:base m) :params out-params :summary (:summary model))))))
 
 
 ;:get-device-credentials-using-get
