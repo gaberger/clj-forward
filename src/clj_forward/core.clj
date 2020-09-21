@@ -9,35 +9,12 @@
             [cheshire.core :refer [parse-string]]
             [martian.core :as martian]
             [martian.interceptors :as interceptors]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+  (:import (schema.core OptionalKey)))
 
 (timbre/refer-timbre)
 (timbre/merge-config! {:appenders {:println {:enabled? true}}})
 (timbre/set-level! :debug)
-
-;(defn add-custom-header [user password debug insecure?]
-;  {:name  ::add-authentication-header
-;   :enter (fn [ctx]
-;            (-> ctx
-;                (assoc-in [:request :headers "Authorization"] (str "Basic:" (utils/encode (str user ":" password))))
-;                (assoc-in [:request :debug] debug)
-;                (assoc-in [:request :insecure?] insecure?)
-;                ))})
-
-
-;(defn create-fwd-context [{:keys [target user password debug insecure?]
-;                           :or   {debug     false
-;                                  insecure? false}}
-;
-;                          ]
-;  (let [default-interceptors (concat martian/default-interceptors [(add-custom-header user password debug insecure?)
-;                                                                   interceptors/default-encode-body
-;                                                                   interceptors/default-coerce-response
-;                                                                   martian-http/perform-request])]
-;
-;    (martian/bootstrap-openapi target (parse-string (slurp (io/resource "api.json")))
-;                               {:interceptors default-interceptors})))
-
 
 (defn bootstrap-openapi [api-root json & [opts]]
   (let [default-interceptors (concat martian/default-interceptors [opts
@@ -94,9 +71,11 @@
                :when (= (:sub m) k)
                :let [model (explore martian (:base m))
                      params (get-in model [:parameters])
-                     params-ks (filterv #(not= (type %) schema.core.OptionalKey) (vec (keys params)))
+                     params-req-ks (filterv #(not= (type %) OptionalKey) (vec (keys params)))
+                     params-opt-ks (let [v (filterv #(= (type %) OptionalKey) (vec (keys params)))]
+                                     (mapv #(.-k %) v))
                      ]]
-           (assoc m :base (:base m) :param params-ks :summary (:summary model))
+           (assoc m :base (:base m) :param-req params-req-ks :param-opt params-opt-ks :summary (:summary model))
            ))))
 
 

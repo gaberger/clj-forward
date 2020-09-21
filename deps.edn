@@ -1,16 +1,10 @@
 {:paths ["src" "resources"]
  :deps  {org.clojure/clojure            {:mvn/version "1.10.0"}
-         ;gaberger/martian               {:git/url "https://github.com/gaberger/martian.git"
-         ;                                :sha     "64fef15f2c0713d565c6b2128352a87246ed6d43"}
          martian/martian                {:mvn/version "0.1.13-SNAPSHOT"}
-         ;gaberger/martian-clj-http-lite {:git/url "https://github.com/gaberger/martian-clj-http-lite"
-         ;                                :sha     "1c8decfdd2884f4a89c36aaffb5f4cd3fe95d110"}
-
          gaberger/martian-clj-http-lite {:git/url "https://github.com/gaberger/martian-clj-http-lite.git"
                                          :sha     "545867a13d1e7e77491d40fc5f33c41fb6d46420"}
          gaberger/clj-http-lite         {:git/url "https://github.com/gaberger/clj-http-lite.git"
                                          :sha     "d0e4eb3b3b114dc899a279cc3acaa4b93c9400ca"}
-
          slingshot                      {:mvn/version "0.12.2"}
          com.taoensso/timbre            {:mvn/version "4.10.0"}
          }
