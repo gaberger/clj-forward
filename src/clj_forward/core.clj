@@ -23,6 +23,14 @@
                                                                    martian-http/perform-request])]
     (martian/bootstrap-openapi api-root json {:interceptors default-interceptors})))
 
+(defn bootstrap [api-root json & [opts]]
+  (let [default-interceptors (concat martian/default-interceptors [opts
+                                                                   interceptors/default-encode-body
+                                                                   interceptors/default-coerce-response
+                                                                   martian-http/perform-request])]
+    (martian/bootstrap api-root json {:interceptors default-interceptors})))
+
+
 (def explore martian/explore)
 (def request-for martian/request-for)
 (def response-for martian/response-for)
