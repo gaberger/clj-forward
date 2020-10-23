@@ -87,6 +87,14 @@
                      ]]
            (assoc m :base (:base m) :params out-params :summary (:summary model))))))
 
+(defn add-custom-header [user password debug insecure?]
+  {:name  ::add-authentication-header
+   :enter (fn [ctx]
+            (-> ctx
+                (assoc-in [:request :headers "Authorization"] (str "Basic:" (utils/encode (str user ":" password))))
+                (assoc-in [:request :debug] debug)
+                (assoc-in [:request :insecure?] insecure?)
+                ))})
 
 ;:get-device-credentials-using-get
 ;"Lists a network’s device credentials"]
