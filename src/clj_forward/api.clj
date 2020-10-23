@@ -25,7 +25,7 @@
                            :or   {debug false insecure false} :as args}]
   {:pre [(s/valid? ::specs/input-spec args)]}
   (let [api-spec (parse-string (slurp (io/resource (format "api-%s.json" version))))]
-    (bootstrap-openapi server api-spec)
-    (add-custom-header user password debug insecure)))
+    (bootstrap-openapi server api-spec
+                       (add-custom-header user password debug insecure))))
 
 
