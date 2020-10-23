@@ -7,6 +7,8 @@
                                          :sha     "d0e4eb3b3b114dc899a279cc3acaa4b93c9400ca"}
          slingshot                      {:mvn/version "0.12.2"}
          com.taoensso/timbre            {:mvn/version "4.10.0"}
+         org.clojure/spec.alpha         {:mvn/version "0.1.143"}
+         failjure/failjure              {:mvn/version "2.0.0"}
          }
  :aliases
         {:test    {:extra-paths ["test"]
