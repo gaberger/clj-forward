@@ -24,9 +24,8 @@
 (defn create-fwd-context [{:keys [server version user password debug insecure]
                            :or   {debug false insecure false} :as args}]
   {:pre [(s/valid? ::specs/input-spec args)]}
-   (let [api-spec (parse-string (slurp (io/resource (format "api-%s.json" version))))]
-     (bootstrap-openapi server api-spec)
-     (add-custom-header user password debug insecure))
-        (f/fail "Input parameters fail spec"))
+  (let [api-spec (parse-string (slurp (io/resource (format "api-%s.json" version))))]
+    (bootstrap-openapi server api-spec)
+    (add-custom-header user password debug insecure)))
 
 
