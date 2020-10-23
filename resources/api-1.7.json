@@ -1,0 +1,5423 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Upload, analyze, and interact with network Snapshots",
+    "version": "1.7",
+    "title": "Forward Networks API",
+    "contact": {
+      "email": "support@forwardnetworks.com"
+    },
+    "license": {}
+  },
+  "tags": [
+    {
+      "name": "Aliases",
+      "description": "Alias Controller"
+    },
+    {
+      "name": "Checks",
+      "description": "Check Controller"
+    },
+    {
+      "name": "NQE",
+      "description": "Nqe Controller"
+    },
+    {
+      "name": "Network Collection",
+      "description": "Collection Controller"
+    },
+    {
+      "name": "Network Setup",
+      "description": "Network Setup Controller"
+    },
+    {
+      "name": "Network Snapshot Data Files",
+      "description": "Device File Controller"
+    },
+    {
+      "name": "Network Snapshots",
+      "description": "Snapshot Controller"
+    },
+    {
+      "name": "Networks",
+      "description": "Network Controller"
+    },
+    {
+      "name": "Path Search",
+      "description": "Path Search Controller"
+    },
+    {
+      "name": "Synthetic Devices",
+      "description": "Synthetic Device Controller"
+    },
+    {
+      "name": "topology-controller",
+      "description": "Topology Controller"
+    }
+  ],
+  "paths": {
+    "/api/networks": {
+      "get": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Lists all networks",
+        "operationId": "getNetworksUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Network"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Creates a network",
+        "operationId": "createNetworkUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Network"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}": {
+      "delete": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Deletes a network",
+        "operationId": "deleteNetworkUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Network"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Renames a network",
+        "operationId": "updateNetworkUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "update",
+            "description": "update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NetworkUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Network"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/cancelcollection": {
+      "post": {
+        "tags": [
+          "Network Collection"
+        ],
+        "summary": "Cancels an in-progress network collection",
+        "operationId": "cancelCollectUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "description": "force",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/collector/status": {
+      "get": {
+        "tags": [
+          "Network Collection"
+        ],
+        "summary": "Gets the status of a network’s collector",
+        "operationId": "getCollectorStateUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CollectorState"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/deviceCredentials": {
+      "get": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Lists a network’s device credentials",
+        "description": "Omits the sensitive properties `password` and `content`.",
+        "operationId": "getDeviceCredentialsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DeviceCredential"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Creates or replaces a network device credential",
+        "operationId": "createDeviceCredentialUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "deviceCredential",
+            "description": "deviceCredential",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceCredential"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DeviceCredential"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/deviceCredentials/{credentialId}": {
+      "delete": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Deletes a network device credential",
+        "operationId": "deleteDeviceCredentialUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "description": "credentialId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Updates a network device credential",
+        "operationId": "patchDeviceCredentialUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "credentialId",
+            "in": "path",
+            "description": "credentialId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "update",
+            "description": "update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceCredentialUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/deviceSources": {
+      "get": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Gets a network’s device sources",
+        "operationId": "getDeviceSourcesUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DeviceSource"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Creates or updates network device sources",
+        "operationId": "addOrUpdateDeviceSourcesUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "deviceSources",
+            "description": "deviceSources",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DeviceSource"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/deviceSources/{deviceSourceName}": {
+      "put": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Creates or replaces a network device source",
+        "operationId": "updateDeviceSourceUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceSourceName",
+            "in": "path",
+            "description": "deviceSourceName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "deviceSource",
+            "description": "deviceSource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceSource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Deletes a network device source",
+        "operationId": "deleteDeviceSourceUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceSourceName",
+            "in": "path",
+            "description": "deviceSourceName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/jumpServers": {
+      "get": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Lists a network’s jump servers",
+        "description": "Omits the sensitive `password` property.",
+        "operationId": "getJumpServersUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/JumpServer"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Creates or replaces a jump server",
+        "operationId": "createJumpServerUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "jumpServer",
+            "description": "jumpServer",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JumpServer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/JumpServer"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/jumpServers/{jumpServerId}": {
+      "delete": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Deletes a jump server",
+        "operationId": "deleteJumpServerUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "jumpServerId",
+            "in": "path",
+            "description": "jumpServerId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Network Setup"
+        ],
+        "summary": "Updates a jump server",
+        "operationId": "editJumpServerUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "jumpServerId",
+            "in": "path",
+            "description": "jumpServerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "update",
+            "description": "update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JumpServerUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/layout": {
+      "get": {
+        "tags": [
+          "Network Layout"
+        ],
+        "summary": "Gets the network layout",
+        "operationId": "getNetworkLayoutUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TopologyLayout"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Layout"
+        ],
+        "summary": "Updates the network layout",
+        "description": "Updates the network layout with any new device positions provided. Changes affect all Snapshots of the network.",
+        "operationId": "setNetworkLayoutUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "layout",
+            "description": "layout",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TopologyLayout"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/snapshots": {
+      "get": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Lists all Snapshots",
+        "operationId": "listNetworkSnapshotsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/NetworkSnapshots"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Imports a Snapshot",
+        "description": "Imports a network Snapshot that was previously exported as a .zip file.",
+        "operationId": "createSnapshotUsingPOST",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "file",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SnapshotMeta"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/snapshots/latestProcessed": {
+      "get": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Returns the latest processed Snapshot",
+        "description": "Returns the latest processed Snapshot (the most recent one that's currently prepared for [path searches](#path-search) and [new checks](#checks)).\n\nTriggers processing of the latest Snapshot if it's not already underway and the network has no processed Snapshots.",
+        "operationId": "getLatestProcessedSnapshotUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Processing is complete for the identified Snapshot.",
+            "schema": {
+              "$ref": "#/definitions/SnapshotMeta"
+            }
+          },
+          "404": {
+            "description": "The network has no Snapshots."
+          },
+          "409": {
+            "description": "None of the Snapshots in the network are processed. Processing of the latest Snapshot has begun.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/startcollection": {
+      "post": {
+        "tags": [
+          "Network Collection"
+        ],
+        "summary": "Triggers a network collection",
+        "operationId": "collectUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Optional body that limits collection to a subset of the network’s devices.\n\nSpecify either `deviceGroup` or `devices`, not both.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PartialCollectionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/networks/{networkId}/topology": {
+      "put": {
+        "tags": [
+          "Network Topology"
+        ],
+        "summary": "Sets the topology overrides",
+        "description": "Applies to the network’s latest Snapshot (if any) and to future collected Snapshots.\n\nThe **links** format is:\n```\n[\n  [\"device1\", \"port1\", \"device2\", \"port2\"],\n  [\"device3\", \"port3\", \"device4\", \"port4\"],\n  ...\n]\n```\nUsing a `PUT` or `POST` to `/snapshots/{snapshotId}/topology/overrides` is preferred.",
+        "operationId": "setNetworkTopoListUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "networkId",
+            "in": "path",
+            "description": "networkId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "links",
+            "description": "links",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/nqe": {
+      "post": {
+        "tags": [
+          "NQE"
+        ],
+        "summary": "Runs an NQE query on a Snapshot.",
+        "operationId": "runNqeQueryUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "query",
+            "description": "The ID of Snapshot to query. Exactly one of the snapshotId and networkId parameters must be provided.",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "networkId",
+            "in": "query",
+            "description": "The ID of the Network to query. The query will be run on the latest Snapshot for the given Network. Exactly one of the snapshotId and networkId parameters must be provided.",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "in": "body",
+            "name": "runRequest",
+            "description": "The following is an example query request. The query will ignore the first 20 return values, and only return 100 values in total. The rows will be sorted by the `deviceName` column in ascending order, and only rows whose `deviceName` entry contains \"ATL\" will be returned.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NqeQueryRunRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response is an object containing two fields: a `\"snapshotId\"` field, that indicates the Snapshot that the query was run against, and an `\"items\"` field, that contains the query's results.\n\nThe `\"items\"` field contains an array of objects that resulted from the query. Each object in the `\"items\"` array, is either a \"basic\" value or a list of \"basic\" values, where a \"basic\" value is either a number, boolean, string, or null.",
+            "schema": {
+              "$ref": "#/definitions/NqeRunResult"
+            }
+          },
+          "400": {
+            "description": "The query did not complete successfully. For example, the query could not be parsed, the column filters were invalid, or the query timed out or was cancelled during execution. The response will contain `\"completionType\"`, `\"errors\"`, and `\"snapshotId\"` fields that provide detailed information onthe errors. See model for more information.\n\nNOTE: A 400 code can also be thrown for other errors, such as a lack of permission to execute the query. In such cases, the `\"completionType\"`, `\"errors\"`, and `\"snapshotId\"` fields will be omitted from the response.",
+            "schema": {
+              "$ref": "#/definitions/NqeErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/predefinedChecks": {
+      "get": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Gets available Predefined checks",
+        "operationId": "getAvailablePredefinedChecksUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AvailablePredefinedCheck"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}": {
+      "get": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Exports a Snapshot",
+        "description": "Exports a network Snapshot as a .zip file.",
+        "operationId": "zipSnapshotUsingGET",
+        "produces": [
+          "application/zip"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Deletes a Snapshot",
+        "operationId": "deleteSnapshotUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/aliases": {
+      "get": {
+        "tags": [
+          "Aliases"
+        ],
+        "summary": "Gets all Aliases",
+        "operationId": "getAllAliasesUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AllAliases"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/aliases/{aliasName}": {
+      "get": {
+        "tags": [
+          "Aliases"
+        ],
+        "summary": "Gets an Alias",
+        "operationId": "getSingleAliasUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aliasName",
+            "in": "path",
+            "description": "aliasName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AliasAndValue"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Aliases"
+        ],
+        "summary": "Creates an Alias",
+        "operationId": "createSnapshotAliasUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aliasName",
+            "in": "path",
+            "description": "aliasName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "aliasBuilder",
+            "description": "aliasBuilder",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Builder«Alias»"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Alias"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Aliases"
+        ],
+        "summary": "Deletes an Alias",
+        "operationId": "deactivateAliasUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aliasName",
+            "in": "path",
+            "description": "aliasName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Alias"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/checks": {
+      "get": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Gets checks (with status)",
+        "operationId": "getChecksUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "collectionFormat": "multi",
+            "enum": [
+              "Isolation",
+              "Reachability",
+              "Existential",
+              "QueryStringBased",
+              "Predefined",
+              "NQE"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/NetworkCheckResult"
+              }
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Adds a check",
+        "operationId": "addCheckUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "persistent",
+            "in": "query",
+            "description": "Whether to associate check with any later snapshots (including future snapshots) too",
+            "required": false,
+            "type": "boolean",
+            "default": true,
+            "allowEmptyValue": false
+          },
+          {
+            "in": "body",
+            "name": "check",
+            "description": "check",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewNetworkCheck"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/NetworkCheckResult"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Deactivates all checks",
+        "operationId": "deactivateChecksUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/checks/{checkId}": {
+      "get": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Gets a check (with status)",
+        "operationId": "getSingleCheckUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "checkId",
+            "in": "path",
+            "description": "checkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/NetworkCheckResultWithDiagnosis"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Deactivates a check",
+        "operationId": "deactivateCheckUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "checkId",
+            "in": "path",
+            "description": "checkId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/devices/{deviceName}/files": {
+      "get": {
+        "tags": [
+          "Network Snapshot Data Files"
+        ],
+        "summary": "Lists a device’s data files",
+        "operationId": "getDeviceFilesUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceName",
+            "in": "path",
+            "description": "deviceName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DeviceFiles"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/devices/{deviceName}/files/{fileName}": {
+      "get": {
+        "tags": [
+          "Network Snapshot Data Files"
+        ],
+        "summary": "Gets device data file content",
+        "description": "Most device data files are text files. Some are binary. A file’s extension indicates its type.\n\nFor convenience, the .txt file extension is optional (can be omitted).",
+        "operationId": "getDeviceFileContentUsingGET",
+        "produces": [
+          "application/octet-stream",
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceName",
+            "in": "path",
+            "description": "deviceName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "description": "fileName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l2Vpns": {
+      "get": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Gets a network’s L2VPNs",
+        "operationId": "getL2VpnsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Replaces all of a network’s L2VPNs",
+        "operationId": "putL2VpnsUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "l2VpnList",
+            "description": "l2VpnList",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L2VpnList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l2Vpns/{l2VpnName}": {
+      "get": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Gets an L2VPN",
+        "operationId": "getL2VpnUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Adds or replaces an L2VPN",
+        "operationId": "putL2VpnUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "l2Vpn",
+            "description": "l2Vpn",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Removes an L2VPN",
+        "operationId": "deleteL2VpnUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Updates an L2VPN",
+        "operationId": "patchL2VpnUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "patch",
+            "description": "patch",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L2VpnPatch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l2Vpns/{l2VpnName}/connections": {
+      "post": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Adds a connection to an L2VPN",
+        "operationId": "addL2VpnConnectionUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "connection",
+            "description": "connection",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L2VpnConnection"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l2Vpns/{l2VpnName}/connections/{deviceName}/{portName}": {
+      "delete": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Removes a connection from an L2VPN",
+        "operationId": "deleteL2VpnConnectionUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l2VpnName",
+            "in": "path",
+            "description": "l2VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceName",
+            "in": "path",
+            "description": "deviceName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "portName",
+            "in": "path",
+            "description": "portName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L2Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l3Vpns": {
+      "get": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Gets a network’s L3VPNs",
+        "operationId": "getL3VpnsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Replaces all of a network’s L3VPNs",
+        "operationId": "putL3VpnsUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "l3Vpns",
+            "description": "l3Vpns",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L3VpnList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l3Vpns/{l3VpnName}": {
+      "get": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Gets an L3VPN",
+        "operationId": "getL3VpnUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Adds or replaces an L3VPN",
+        "operationId": "putL3VpnUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "l3Vpn",
+            "description": "l3Vpn",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Removes an L3VPN",
+        "operationId": "deleteL3VpnUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3VpnList"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Updates an L3VPN",
+        "operationId": "patchL3VpnUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "patch",
+            "description": "patch",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L3VpnPatch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l3Vpns/{l3VpnName}/connections": {
+      "post": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Adds a connection to an L3VPN",
+        "operationId": "addL3VpnConnectionUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "connection",
+            "description": "connection",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/L3VpnConnection"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/l3Vpns/{l3VpnName}/connections/{deviceName}/{portName}": {
+      "delete": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Removes a connection from an L3VPN",
+        "operationId": "deleteL3VpnEdgePortUsingDELETE",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "l3VpnName",
+            "in": "path",
+            "description": "l3VpnName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceName",
+            "in": "path",
+            "description": "deviceName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "portName",
+            "in": "path",
+            "description": "portName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/L3Vpn"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/metrics": {
+      "get": {
+        "tags": [
+          "Network Snapshots"
+        ],
+        "summary": "Returns the metrics of a Snapshot",
+        "description": "Returns collection and processing health metrics of a Snapshot.",
+        "operationId": "getSnapshotMetricsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved metrics for the Snapshot.",
+            "schema": {
+              "$ref": "#/definitions/SnapshotMetrics"
+            }
+          },
+          "404": {
+            "description": "The Snapshot was not found or its metrics were not found; the health metrics will be recomputed if the Snapshot is reprocessed."
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/paths": {
+      "get": {
+        "tags": [
+          "Path Search"
+        ],
+        "summary": "Searches for paths by tracing packets through the network",
+        "operationId": "getPathsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "srcIp",
+            "in": "query",
+            "description": "the source IP address or subnet of packets entering the network. For multicast (*, G) paths, set srcIp = G (multicast group address).",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "dstIp",
+            "in": "query",
+            "description": "the destination IP address or subnet of packets entering the network. For multicast (*, G) paths, set dstIp = G (multicast group address).",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "intent",
+            "in": "query",
+            "description": "Specifies the intent for the search. Default PREFER_DELIVERED.\n*PREFER_VIOLATIONS*: Prefer paths that result in the traffic not getting delivered, e.g. drops, blackholes, loops. An example usage is while trying to evaluate if the specified traffic always gets delivered to the destination along all path choices.\n*PREFER_DELIVERED*: Prefer paths that result in the traffic getting delivered. An example usage is while trying to evaluate if traffic gets delivered to the destination along any path choice.\n*VIOLATIONS_ONLY*: Search for paths where traffic is not delivered to the destination.\n*SINGLE_BEST*: (Deprecated) Same as \"PREFER_DELIVERED\" with a maximum of 1 result\nand 0 or 1 return path results.",
+            "required": false,
+            "type": "string",
+            "default": "PREFER_DELIVERED",
+            "allowEmptyValue": false,
+            "enum": [
+              "PREFER_VIOLATIONS",
+              "PREFER_DELIVERED",
+              "VIOLATIONS_ONLY",
+              "SINGLE_BEST"
+            ]
+          },
+          {
+            "name": "ipProto",
+            "in": "query",
+            "description": "the IP protocol",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "srcPort",
+            "in": "query",
+            "description": "the L4 source port, like \"80\" or a range \"8080-8088\"",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "dstPort",
+            "in": "query",
+            "description": "the L4 destination port, like \"80\" or a range \"8080-8088\"",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "icmpType",
+            "in": "query",
+            "description": "the ICMP type. Can be specified only when ipProto = 1.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "includeNetworkFunctions",
+            "in": "query",
+            "description": "If true, the response includes detailed forwarding info for each hop.\nNote: Setting this to true increases the API response time.",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "allowEmptyValue": false,
+            "x-example": false
+          },
+          {
+            "name": "maxCandidates",
+            "in": "query",
+            "description": "the limit on the number of search results computed, before applying any ranking criteria. Permitted range = 1 to 10,000. Default 5,000.",
+            "required": false,
+            "type": "integer",
+            "default": 5000,
+            "format": "int32",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "maxResults",
+            "in": "query",
+            "description": "the limit on the number of search results returned by the API. First, the platform computes up to maxCandidates results that match the search criteria. Then they are sorted by various ranking criteria. A key ranking factor is path length, preferring longer paths (greatest reach) in the network over shorter ones. Finally, the API limits the number of returned search results to maxResults. Permitted range = 1 to maxCandidates. Default 1.",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "maxReturnPathResults",
+            "in": "query",
+            "description": "the limit on the number of return path search results. Permitted range = 0 to 10,000. Default 0. Multicast (*, G) and (S, G) queries will always return 0 return path results regardless of this value.",
+            "required": false,
+            "type": "integer",
+            "default": 0,
+            "format": "int32",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "maxSeconds",
+            "in": "query",
+            "description": "the timeout duration. Permitted range = 1 to 600. Default 30.",
+            "required": false,
+            "type": "integer",
+            "default": 30,
+            "format": "int64",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PathSearchResponse"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/pathsBulk": {
+      "post": {
+        "tags": [
+          "Path Search"
+        ],
+        "summary": "Searches for paths by tracing sets of packets through the network",
+        "operationId": "getPathsBulkUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PathSearchBulkRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response is an array containing a result (a `PathSearchResponse` or an error object) for each query in the request, in the same order. An error object has an `\"error\": true` property. Each query is evaluated independently.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PathSearchResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "The request failed input validation. For example, a request parameter is outside the permitted range or an input path search query had an invalid IP protocol and ICMP type combination."
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/pathsBulkSeq": {
+      "post": {
+        "tags": [
+          "Path Search"
+        ],
+        "summary": "Searches for paths by tracing sets of packets through the network",
+        "operationId": "getTracePathsBulkSeqUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json-seq"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PathSearchBulkRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response is a sequence of a result (a `PathSearchResponse` or an error object) for each query in the request, in the same order. Each result is prefixed by an ASCII Record Separator (0x1E), and ends with an ASCII Line Feed character (0x0A), as described in [RFC 7464: JSON Text Sequences](https://tools.ietf.org/html/rfc7464). An error object has an `\"error\": true` property. Each query is evaluated independently.",
+            "schema": {
+              "$ref": "#/definitions/PathSearchResponse"
+            }
+          },
+          "400": {
+            "description": "The request failed input validation. For example, a request parameter is outside the permitted range or an input path search query had an invalid IP protocol and ICMP type combination."
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/topology": {
+      "get": {
+        "tags": [
+          "Network Topology"
+        ],
+        "summary": "Gets the network topology",
+        "description": "The links in the response are directed, so they generally appear twice—once for each direction.",
+        "operationId": "getTopologyUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TopologyLink"
+              }
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/topology/internetConnections": {
+      "get": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Gets a network’s internet connections",
+        "operationId": "getInternetConnectionsUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/InternetConnection"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Synthetic Devices"
+        ],
+        "summary": "Replaces a network’s internet connections",
+        "operationId": "postInternetConnectionsUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "connections",
+            "description": "connections",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/InternetConnection"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/snapshots/{snapshotId}/topology/overrides": {
+      "get": {
+        "tags": [
+          "Network Topology"
+        ],
+        "summary": "Gets the topology overrides",
+        "operationId": "getSnapshotTopoOverridesUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LinkOverrides"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Network Topology"
+        ],
+        "summary": "Edits the topology overrides",
+        "operationId": "postSnapshotTopoOverridesUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "linkOverridesEdit",
+            "description": "linkOverridesEdit",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LinkOverridesEdit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "Network Topology"
+        ],
+        "summary": "Sets the topology overrides",
+        "description": "Replaces any topology overrides previously saved for the Snapshot.",
+        "operationId": "putSnapshotTopoOverridesUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "snapshotId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "linkOverrides",
+            "description": "linkOverrides",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LinkOverrides"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EmptyObject"
+            }
+          },
+          "409": {
+            "description": "The system is currently processing this Snapshot.\n\nNote: GET /networks/{networkId}/snapshots/latestProcessed can be used to determine when processing of the latest Snapshot is done or to identify an alternate Snapshot that has already been processed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorInfo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Email/Password": []
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Email/Password": {
+      "type": "basic"
+    }
+  },
+  "definitions": {
+    "AclFunction": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "the action taken by the ACL function",
+          "enum": [
+            "PERMIT",
+            "DENY"
+          ]
+        },
+        "context": {
+          "type": "string",
+          "description": "the context in which the ACL function is applied",
+          "enum": [
+            "INPUT",
+            "OUTPUT"
+          ]
+        }
+      },
+      "title": "AclFunction"
+    },
+    "Alias": {
+      "type": "object",
+      "properties": {
+        "creationTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "creatorId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "HOSTS",
+            "DEVICES",
+            "INTERFACES",
+            "HEADERS",
+            "LOGICAL_NETWORK"
+          ]
+        }
+      },
+      "title": "Alias"
+    },
+    "AliasAndValue": {
+      "type": "object",
+      "properties": {
+        "creationTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "creatorId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "HOSTS",
+            "DEVICES",
+            "INTERFACES",
+            "HEADERS",
+            "LOGICAL_NETWORK"
+          ]
+        }
+      },
+      "title": "AliasAndValue"
+    },
+    "AllAliases": {
+      "type": "object",
+      "properties": {
+        "aliases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Alias"
+          }
+        }
+      },
+      "title": "AllAliases"
+    },
+    "AvailablePredefinedCheck": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "predefinedCheckType": {
+          "type": "string",
+          "enum": [
+            "BGP_NEIGHBOR_ADJACENCY",
+            "BGP_ROUTER_ID",
+            "BGP_ROUTE_CONSISTENCY",
+            "BGP_VPC_PARAMETER_CONSISTENCY",
+            "EBGP_SELECTION_OVER_IBGP",
+            "BGP_COMMUNITY_LIST",
+            "NEXT_HOP_REACHABILITY",
+            "NO_LOOP",
+            "SHORTEST_PATH",
+            "IP_UNIQUENESS",
+            "HOSTNAME_CONSISTENCY",
+            "HOSTNAME_UNIQUENESS",
+            "VLAN_CONSISTENCY",
+            "MTU_CONSISTENCY",
+            "PORT_CHANNEL_CONSISTENCY",
+            "DUPLEX_CONSISTENCY",
+            "LINK_SPEED_CONSISTENCY",
+            "SOFTWARE_VERSION_CONSISTENCY",
+            "TRUNK_INTERFACE_WHITELIST",
+            "VLAN_EXISTENCE",
+            "LEARNED_MAC_CONSISTENCY",
+            "FHRP_PEERING",
+            "VPC_PARAMETER_CONSISTENCY",
+            "VPC_INTERFACE_PARAMETER_CONSISTENCY",
+            "VPC_DEDICATED_KEEPALIVE_LINK",
+            "VPC_ROLE_PRIORITY",
+            "SSH_RSA_KEY_LENGTH",
+            "VPC_STP_PRIORITY",
+            "VPC_MST_REGION_CONSISTENCY"
+          ]
+        }
+      },
+      "title": "AvailablePredefinedCheck"
+    },
+    "Builder": {
+      "title": "Builder",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Builder«Alias»"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "HOSTS",
+                "DEVICES",
+                "INTERFACES",
+                "HEADERS",
+                "LOGICAL_NETWORK"
+              ]
+            },
+            "devices": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "edgeNodes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "title": "Builder"
+        }
+      ]
+    },
+    "Builder«Alias»": {
+      "type": "object",
+      "discriminator": "type",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "HOSTS",
+            "DEVICES",
+            "INTERFACES",
+            "HEADERS",
+            "LOGICAL_NETWORK"
+          ]
+        }
+      },
+      "title": "Builder«Alias»"
+    },
+    "CheckDefinition": {
+      "type": "object",
+      "properties": {
+        "checkType": {
+          "type": "string",
+          "enum": [
+            "Isolation",
+            "Reachability",
+            "Existential",
+            "QueryStringBased",
+            "Predefined",
+            "NQE"
+          ]
+        }
+      },
+      "title": "CheckDefinition"
+    },
+    "CheckDiagnosis": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DiagnosisDetail"
+          }
+        },
+        "detailsIncomplete": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "title": "CheckDiagnosis"
+    },
+    "CollectorState": {
+      "type": "object",
+      "properties": {
+        "busyStatus": {
+          "type": "string",
+          "enum": [
+            "OFFLINE",
+            "IDLE",
+            "TESTING",
+            "COLLECTING",
+            "COLLECTION_QUEUED",
+            "UPDATING"
+          ]
+        },
+        "hasDevicesConfigured": {
+          "type": "boolean"
+        },
+        "isIdle": {
+          "type": "boolean"
+        },
+        "isOnline": {
+          "type": "boolean"
+        },
+        "isSet": {
+          "type": "boolean"
+        }
+      },
+      "title": "CollectorState"
+    },
+    "ColumnFilter": {
+      "type": "object",
+      "required": [
+        "columnName",
+        "value"
+      ],
+      "properties": {
+        "columnName": {
+          "type": "string",
+          "example": "deviceName",
+          "description": "The name of a column to filter on."
+        },
+        "value": {
+          "type": "string",
+          "example": "ATL",
+          "description": "A string to match on."
+        }
+      },
+      "title": "ColumnFilter"
+    },
+    "DeviceCredential": {
+      "type": "object",
+      "required": [
+        "name",
+        "password",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "8c4a168e-c6ca-4978-bcc9-c0ec7f64a163",
+          "description": "auto-generated if not provided"
+        },
+        "type": {
+          "type": "string",
+          "example": "LOGIN",
+          "enum": [
+            "LOGIN",
+            "PRIVILEGED_MODE",
+            "OPENFLOW_KEY_STORE",
+            "OPENFLOW_TRUST_STORE",
+            "SHELL",
+            "KEY_STORE"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "example": "admin (sjc)",
+          "description": "for display purposes in the application"
+        },
+        "username": {
+          "type": "string",
+          "example": "admin",
+          "description": "required for `LOGIN` and `SHELL` types"
+        },
+        "password": {
+          "type": "string",
+          "example": "my-s3cr3t-p4s$w0rd"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte",
+          "example": "MIIPIQIBAzCCDtoGCSqGSIb3DQEHAa...",
+          "description": "base64-encoded [collector.jks](/docs/getting_started/forward_collector/advanced_configuration/openflow_ssl/) for `KEY_STORE` type"
+        }
+      },
+      "title": "DeviceCredential"
+    },
+    "DeviceCredentialUpdate": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "LOGIN",
+          "enum": [
+            "LOGIN",
+            "PRIVILEGED_MODE",
+            "OPENFLOW_KEY_STORE",
+            "OPENFLOW_TRUST_STORE",
+            "SHELL",
+            "KEY_STORE"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "example": "admin (sjc)",
+          "description": "for display purposes in the application"
+        },
+        "username": {
+          "type": "string",
+          "example": "admin",
+          "description": "for `LOGIN` and `SHELL` types"
+        },
+        "password": {
+          "type": "string",
+          "example": "my-s3cr3t-p4s$w0rd"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte",
+          "example": "MIIPIQIBAzCCDtoGCSqGSIb3DQEHAa...",
+          "description": "base64-encoded [collector.jks](/docs/getting_started/forward_collector/advanced_configuration/openflow_ssl/) for `KEY_STORE` type"
+        }
+      },
+      "title": "DeviceCredentialUpdate"
+    },
+    "DeviceFile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "configuration.txt"
+        },
+        "bytes": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1234
+        }
+      },
+      "title": "DeviceFile"
+    },
+    "DeviceFiles": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceFile"
+          }
+        }
+      },
+      "title": "DeviceFiles"
+    },
+    "DeviceNode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "loopbackDirection": {
+          "type": "number",
+          "format": "float"
+        },
+        "x": {
+          "type": "number",
+          "format": "float"
+        },
+        "y": {
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "title": "DeviceNode"
+    },
+    "DevicePort": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        }
+      },
+      "title": "DevicePort"
+    },
+    "DeviceSource": {
+      "type": "object",
+      "required": [
+        "host",
+        "name",
+        "type"
+      ],
+      "properties": {
+        "collectBgpAdvertisements": {
+          "type": "boolean",
+          "example": false
+        },
+        "disableCollection": {
+          "type": "boolean",
+          "example": false
+        },
+        "fullCollectionLog": {
+          "type": "boolean",
+          "example": false
+        },
+        "host": {
+          "type": "string",
+          "example": "10.121.7.13"
+        },
+        "jumpServerId": {
+          "type": "string",
+          "example": "my-sjc-jump-server"
+        },
+        "keyStoreId": {
+          "type": "string",
+          "example": "my-tls-key-store"
+        },
+        "largeRtt": {
+          "type": "boolean",
+          "example": false
+        },
+        "loginCredentialId": {
+          "type": "string",
+          "example": "my-checkpoint-credentials"
+        },
+        "name": {
+          "type": "string",
+          "example": "my_router"
+        },
+        "paginationMode": {
+          "type": "string",
+          "example": "DISABLE_PAGINATION",
+          "enum": [
+            "KEEP_UNCHANGED",
+            "DISABLE_PAGINATION",
+            "ENABLE_PAGINATION"
+          ]
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 22
+        },
+        "privilegedModePasswordId": {
+          "type": "string",
+          "example": "privileged_mode_password_3"
+        },
+        "shellCredentialId": {
+          "type": "string",
+          "example": "my_avi_shell_cred"
+        },
+        "type": {
+          "type": "string",
+          "example": "checkpoint_ssh",
+          "enum": [
+            "128t_conductor",
+            "128t_router",
+            "a10_acos_ssh",
+            "arista_eos_ssh",
+            "avi_controller_ssh",
+            "avi_se",
+            "avi_controller_ssh_via_host",
+            "bluecoat_ssh",
+            "cisco_ios_ssh",
+            "cisco_ios_telnet",
+            "cisco_ios_xe_ssh",
+            "cisco_ios_xr_ssh",
+            "cisco_nxos_ssh",
+            "cisco_asa_ssh",
+            "cisco_nxos_aci_ssh",
+            "cisco_apic_ssh",
+            "cisco_ave_ssh",
+            "juniper_junos_ssh",
+            "juniper_srx_ssh",
+            "juniper_netscreen_ssh",
+            "pica8_ovs_ofctl_ssh",
+            "linux_ovs_ofctl_ssh",
+            "openflow",
+            "openflow_ofdpa",
+            "pica8_openflow_ovs_ssh",
+            "linux_os_ssh",
+            "f5_ssh",
+            "checkpoint_ssh",
+            "checkpoint_mgmt_ssh",
+            "fortinet_ssh",
+            "hp_comware_ssh",
+            "hp_provision_ssh",
+            "panos_ssh",
+            "panorama_ssh",
+            "circuit",
+            "esxi_ssh",
+            "vcenter_api",
+            "netscaler_ssh",
+            "cumulus_ssh",
+            "riverbed_steelhead_ssh",
+            "aws_api",
+            "aws_host_ssh",
+            "cisco_ucs_ssh",
+            "nsx_api",
+            "azure_api",
+            "avaya_ssh",
+            "avaya_telnet",
+            "gcp_api",
+            "unknown"
+          ]
+        },
+        "openFlow": {
+          "$ref": "#/definitions/OpenFlowConfig"
+        }
+      },
+      "title": "DeviceSource"
+    },
+    "DiagnosisDetail": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DiagnosisReference"
+          }
+        }
+      },
+      "title": "DiagnosisDetail"
+    },
+    "DiagnosisReference": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "$ref": "#/definitions/EntryInfo"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "DiagnosisReference"
+    },
+    "EmptyObject": {
+      "type": "object",
+      "title": "EmptyObject"
+    },
+    "EntryInfo": {
+      "type": "object",
+      "properties": {
+        "empty": {
+          "type": "boolean"
+        },
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "EntryInfo"
+    },
+    "Enum«object»": {
+      "type": "object",
+      "title": "Enum«object»"
+    },
+    "ErrorInfo": {
+      "type": "object",
+      "properties": {
+        "apiUrl": {
+          "type": "string"
+        },
+        "httpMethod": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "TRACE"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "$ref": "#/definitions/Enum«object»"
+        }
+      },
+      "title": "ErrorInfo"
+    },
+    "ExistsCheck": {
+      "title": "ExistsCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "andBack": {
+              "type": "boolean"
+            },
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "filters": {
+              "$ref": "#/definitions/StructuredQuery"
+            },
+            "noiseTypes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "WRONG_GATEWAY",
+                  "INADMISSIBLE",
+                  "NETWORK_OR_BROADCAST_ADDRESS",
+                  "TO_L2_INTERFACE_MAC",
+                  "IP_SRC_SPOOF",
+                  "GLEAN"
+                ]
+              }
+            }
+          },
+          "title": "ExistsCheck"
+        }
+      ]
+    },
+    "ISafeJsonSerializable": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/definitions/ISafeJsonSerializable"
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "100 CONTINUE",
+            "101 SWITCHING_PROTOCOLS",
+            "102 PROCESSING",
+            "103 CHECKPOINT",
+            "200 OK",
+            "201 CREATED",
+            "202 ACCEPTED",
+            "203 NON_AUTHORITATIVE_INFORMATION",
+            "204 NO_CONTENT",
+            "205 RESET_CONTENT",
+            "206 PARTIAL_CONTENT",
+            "207 MULTI_STATUS",
+            "208 ALREADY_REPORTED",
+            "226 IM_USED",
+            "300 MULTIPLE_CHOICES",
+            "301 MOVED_PERMANENTLY",
+            "302 FOUND",
+            "302 MOVED_TEMPORARILY",
+            "303 SEE_OTHER",
+            "304 NOT_MODIFIED",
+            "305 USE_PROXY",
+            "307 TEMPORARY_REDIRECT",
+            "308 PERMANENT_REDIRECT",
+            "400 BAD_REQUEST",
+            "401 UNAUTHORIZED",
+            "402 PAYMENT_REQUIRED",
+            "403 FORBIDDEN",
+            "404 NOT_FOUND",
+            "405 METHOD_NOT_ALLOWED",
+            "406 NOT_ACCEPTABLE",
+            "407 PROXY_AUTHENTICATION_REQUIRED",
+            "408 REQUEST_TIMEOUT",
+            "409 CONFLICT",
+            "410 GONE",
+            "411 LENGTH_REQUIRED",
+            "412 PRECONDITION_FAILED",
+            "413 PAYLOAD_TOO_LARGE",
+            "413 REQUEST_ENTITY_TOO_LARGE",
+            "414 URI_TOO_LONG",
+            "414 REQUEST_URI_TOO_LONG",
+            "415 UNSUPPORTED_MEDIA_TYPE",
+            "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+            "417 EXPECTATION_FAILED",
+            "418 I_AM_A_TEAPOT",
+            "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+            "420 METHOD_FAILURE",
+            "421 DESTINATION_LOCKED",
+            "422 UNPROCESSABLE_ENTITY",
+            "423 LOCKED",
+            "424 FAILED_DEPENDENCY",
+            "425 TOO_EARLY",
+            "426 UPGRADE_REQUIRED",
+            "428 PRECONDITION_REQUIRED",
+            "429 TOO_MANY_REQUESTS",
+            "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+            "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+            "500 INTERNAL_SERVER_ERROR",
+            "501 NOT_IMPLEMENTED",
+            "502 BAD_GATEWAY",
+            "503 SERVICE_UNAVAILABLE",
+            "504 GATEWAY_TIMEOUT",
+            "505 HTTP_VERSION_NOT_SUPPORTED",
+            "506 VARIANT_ALSO_NEGOTIATES",
+            "507 INSUFFICIENT_STORAGE",
+            "508 LOOP_DETECTED",
+            "509 BANDWIDTH_LIMIT_EXCEEDED",
+            "510 NOT_EXTENDED",
+            "511 NETWORK_AUTHENTICATION_REQUIRED"
+          ]
+        },
+        "statusCodeValue": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "ISafeJsonSerializable"
+    },
+    "InterfaceFunction": {
+      "type": "object",
+      "properties": {
+        "l2": {
+          "$ref": "#/definitions/InterfaceFunctionL2Info"
+        },
+        "l3": {
+          "$ref": "#/definitions/InterfaceFunctionL3Info"
+        }
+      },
+      "title": "InterfaceFunction"
+    },
+    "InterfaceFunctionL2Info": {
+      "type": "object",
+      "properties": {
+        "interfaceName": {
+          "type": "string"
+        }
+      },
+      "title": "InterfaceFunctionL2Info"
+    },
+    "InterfaceFunctionL3Info": {
+      "type": "object",
+      "properties": {
+        "interfaceName": {
+          "type": "string"
+        },
+        "vrf": {
+          "type": "string",
+          "description": "Null if the interface does not belong to any VRF"
+        }
+      },
+      "title": "InterfaceFunctionL3Info"
+    },
+    "InternetConnection": {
+      "type": "object",
+      "properties": {
+        "gatewayPort": {
+          "$ref": "#/definitions/DevicePort"
+        },
+        "subnetAutoDiscovery": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "IP_ROUTES",
+            "BGP_ROUTES"
+          ]
+        },
+        "subnets": {
+          "type": "array",
+          "example": [
+            "123.223.47.0/24"
+          ],
+          "items": {
+            "$ref": "#/definitions/IpSubnetAddress"
+          }
+        },
+        "uplinkPort": {
+          "$ref": "#/definitions/DevicePort"
+        },
+        "vlan": {
+          "type": "integer",
+          "format": "int32",
+          "example": 100
+        }
+      },
+      "title": "InternetConnection"
+    },
+    "IsolationCheck": {
+      "title": "IsolationCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "filters": {
+              "$ref": "#/definitions/StructuredQuery"
+            },
+            "noiseTypes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "WRONG_GATEWAY",
+                  "INADMISSIBLE",
+                  "NETWORK_OR_BROADCAST_ADDRESS",
+                  "TO_L2_INTERFACE_MAC",
+                  "IP_SRC_SPOOF",
+                  "GLEAN"
+                ]
+              }
+            }
+          },
+          "title": "IsolationCheck"
+        }
+      ]
+    },
+    "JumpServer": {
+      "type": "object",
+      "required": [
+        "host",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "8c4a168e-c6ca-4978-bcc9-c0ec7f64a164",
+          "description": "auto-generated if not provided"
+        },
+        "host": {
+          "type": "string",
+          "example": "10.121.7.14"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 23,
+          "description": "defaults to 22"
+        },
+        "username": {
+          "type": "string",
+          "example": "admin"
+        },
+        "password": {
+          "type": "string",
+          "example": "my-s3cr3t-p4s$w0rd"
+        },
+        "supportsPortForwarding": {
+          "type": "boolean",
+          "example": false,
+          "description": "defaults to true"
+        }
+      },
+      "title": "JumpServer"
+    },
+    "JumpServerUpdate": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "example": "10.121.7.14"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 23
+        },
+        "username": {
+          "type": "string",
+          "example": "admin"
+        },
+        "password": {
+          "type": "string",
+          "example": "my-s3cr3t-p4s$w0rd"
+        },
+        "supportsPortForwarding": {
+          "type": "boolean",
+          "example": false
+        }
+      },
+      "title": "JumpServerUpdate"
+    },
+    "L2Vpn": {
+      "type": "object",
+      "properties": {
+        "connections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/L2VpnConnection"
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "L2Vpn"
+    },
+    "L2VpnConnection": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "vlan": {
+          "type": "integer",
+          "format": "int32",
+          "example": 100
+        },
+        "port": {
+          "type": "string"
+        }
+      },
+      "title": "L2VpnConnection"
+    },
+    "L2VpnList": {
+      "type": "object",
+      "properties": {
+        "l2Vpns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/L2Vpn"
+          }
+        }
+      },
+      "title": "L2VpnList"
+    },
+    "L2VpnPatch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "L2VpnPatch"
+    },
+    "L3Vpn": {
+      "type": "object",
+      "properties": {
+        "connections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/L3VpnConnection"
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "L3Vpn"
+    },
+    "L3VpnConnection": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "providerEdgeIp": {
+          "type": "string",
+          "example": "1.1.1.1"
+        },
+        "vlan": {
+          "type": "integer",
+          "format": "int32",
+          "example": 100
+        },
+        "vrf": {
+          "type": "string"
+        }
+      },
+      "title": "L3VpnConnection"
+    },
+    "L3VpnList": {
+      "type": "object",
+      "properties": {
+        "l3Vpns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/L3Vpn"
+          }
+        }
+      },
+      "title": "L3VpnList"
+    },
+    "L3VpnPatch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "L3VpnPatch"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "port1": {
+          "type": "string"
+        },
+        "port2": {
+          "type": "string"
+        }
+      },
+      "title": "Link"
+    },
+    "LinkOverrides": {
+      "type": "object",
+      "properties": {
+        "absent": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "present": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      },
+      "title": "LinkOverrides"
+    },
+    "LinkOverridesEdit": {
+      "type": "object",
+      "properties": {
+        "presentAdditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VlanTaggedLink"
+          }
+        },
+        "presentRemovals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "absentAdditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "absentRemovals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      },
+      "title": "LinkOverridesEdit"
+    },
+    "Network": {
+      "type": "object",
+      "properties": {
+        "creatorId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        }
+      },
+      "title": "Network"
+    },
+    "NetworkCheckResult": {
+      "type": "object",
+      "properties": {
+        "creationDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "creatorId": {
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        "definitionDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "editDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editorId": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "executionDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "PASS",
+            "FAIL",
+            "ERROR",
+            "TIMEOUT"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "NetworkCheckResult"
+    },
+    "NetworkCheckResultWithDiagnosis": {
+      "type": "object",
+      "properties": {
+        "creationDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "creatorId": {
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        "definitionDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "diagnosis": {
+          "$ref": "#/definitions/CheckDiagnosis"
+        },
+        "editDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editorId": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "executionDateMillis": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "PASS",
+            "FAIL",
+            "ERROR",
+            "TIMEOUT"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "NetworkCheckResultWithDiagnosis"
+    },
+    "NetworkFunctions": {
+      "type": "object",
+      "properties": {
+        "acl": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AclFunction"
+          }
+        },
+        "egress": {
+          "$ref": "#/definitions/InterfaceFunction"
+        },
+        "ingress": {
+          "$ref": "#/definitions/InterfaceFunction"
+        }
+      },
+      "title": "NetworkFunctions",
+      "description": "Detailed forwarding info"
+    },
+    "NetworkQueryCheck": {
+      "title": "NetworkQueryCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "commitId": {
+              "type": "string"
+            },
+            "query": {
+              "type": "string"
+            },
+            "queryId": {
+              "type": "string"
+            }
+          },
+          "title": "NetworkQueryCheck"
+        }
+      ]
+    },
+    "NetworkSnapshots": {
+      "type": "object",
+      "properties": {
+        "creatorId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SnapshotMeta"
+          }
+        }
+      },
+      "title": "NetworkSnapshots"
+    },
+    "NetworkUpdate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "NetworkUpdate"
+    },
+    "NqeErrorInfo": {
+      "type": "object",
+      "properties": {
+        "apiUrl": {
+          "type": "string"
+        },
+        "completionType": {
+          "type": "string",
+          "enum": [
+            "FINISHED",
+            "CANCELED",
+            "TIMED_OUT"
+          ]
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NqeQueryError"
+          }
+        },
+        "httpMethod": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "TRACE"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "$ref": "#/definitions/Enum«object»"
+        },
+        "snapshotId": {
+          "type": "string",
+          "example": "101",
+          "description": "The ID of the Snapshot the query was run against."
+        }
+      },
+      "title": "NqeErrorInfo"
+    },
+    "NqeQueryError": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "description": "The region in the original query that caused the error.",
+          "$ref": "#/definitions/TextRegion"
+        },
+        "message": {
+          "type": "string",
+          "description": "The error's message."
+        }
+      },
+      "title": "NqeQueryError"
+    },
+    "NqeQueryOptions": {
+      "type": "object",
+      "properties": {
+        "columnFilters": {
+          "type": "array",
+          "description": "(optional) Result filters. Only records that match all filters are returned. A record matches the array of `columnFilters` if the record matches all of the `columnFilters`, in which case it is kept in the results.",
+          "items": {
+            "$ref": "#/definitions/ColumnFilter"
+          }
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int32",
+          "example": 100,
+          "description": "(optional) The maximum number of records to return. Defaults to 100."
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32",
+          "example": 20,
+          "description": "(optional) The number of initial records to skip. Defaults to 0."
+        },
+        "sortBy": {
+          "description": "(optional) An object specifying how results should be sorted.",
+          "$ref": "#/definitions/SortOrder"
+        }
+      },
+      "title": "NqeQueryOptions"
+    },
+    "NqeQueryRunRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "example": "foreach device in network.devices\nforeach i in device.interfaces\nwhere i.adminStatus == AdminStatus.UP\n   && i.operStatus != OperStatus.UP\nselect {\n  deviceName: deviceName,\n  interfaceName: i.name,\n  adminStatus: i.adminStatus,\n  operStatus: i.operStatus\n}"
+        },
+        "queryOptions": {
+          "$ref": "#/definitions/NqeQueryOptions"
+        }
+      },
+      "title": "NqeQueryRunRequest"
+    },
+    "NqeRecord": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/NqeSimpleValue"
+          }
+        }
+      },
+      "title": "NqeRecord"
+    },
+    "NqeRunResult": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "example": [
+            {
+              "boolField": true,
+              "numField": 1,
+              "nullField": null,
+              "stringField": "string",
+              "listField": [
+                1,
+                2,
+                3
+              ]
+            }
+          ],
+          "description": " The query's results, as a list of objects. Each object corresponds to a record returned by the query, and is an object with fields of simple values, where a simple value is either a basic value or a list of basic values. A basic value is either a number, boolean, string, or null.",
+          "items": {
+            "$ref": "#/definitions/NqeRecord"
+          }
+        },
+        "snapshotId": {
+          "type": "string",
+          "example": "101",
+          "description": "The ID of the Snapshot that the query was run against."
+        }
+      },
+      "title": "NqeRunResult"
+    },
+    "NqeSimpleValue": {
+      "type": "object",
+      "title": "NqeSimpleValue"
+    },
+    "OpenFlowConfig": {
+      "type": "object",
+      "properties": {
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 6653
+        }
+      },
+      "title": "OpenFlowConfig"
+    },
+    "PartialCollectionRequest": {
+      "type": "object",
+      "properties": {
+        "deviceGroup": {
+          "type": "string",
+          "example": "ATL_devices",
+          "description": "The name of a [devices Alias](#aliases). If specified, omit `devices`."
+        },
+        "devices": {
+          "type": "array",
+          "example": [
+            "atl-r*-??",
+            "sjc-r*-??"
+          ],
+          "description": "Device names or name globs. If specified, omit `deviceGroup`.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "PartialCollectionRequest"
+    },
+    "Path": {
+      "type": "object",
+      "properties": {
+        "forwardingOutcome": {
+          "type": "string",
+          "description": "Specifies the traffic forwarding outcome along a path.\n*DELIVERED*: Traffic was delivered to destination IP’s discovered location(s).\n*DELIVERED_TO_INCORRECT_LOCATION*: Traffic was delivered out of some edge ports. However, traffic did not reach the expected delivery locations based on destination IP’s discovered locations. One scenario where this occurs is when a device in the middle of the actual path from source IP to destination IP is not configured for collection in the Forward platform. For example, suppose the actual device path is A -> B -> C, and only devices A and C are part of the snapshot in the Forward platform. In this case, the path would show traffic exiting device A at some edge port, but since destination IP is discovered to reside at device C, traffic is delivered to an incorrect location.\n*BLACKHOLE*: Traffic was implicitly dropped at the last hop, since the device had no matching rule. For example, if a router does not have a default route, traffic to any IP that is not in the routing table gets blackholed.\n*DROPPED*: Traffic was explicitly dropped at the last hop, e.g. by a null route.\n*INADMISSIBLE*: Traffic was not admitted into the network. The first hop interface does not accept the traffic, e.g. incoming traffic had a vlan tag 10 while the ingress interface is an access interface that only permits traffic with vlan tag 20.\n*UNREACHABLE*: ARP/NDP resolution failed along the path resulting in traffic not getting delivered to the intended destination.\n*LOOP*: Traffic entered a forwarding loop.",
+          "enum": [
+            "DELIVERED",
+            "DELIVERED_TO_INCORRECT_LOCATION",
+            "DROPPED",
+            "LOOP",
+            "INADMISSIBLE",
+            "BLACKHOLE",
+            "UNREACHABLE"
+          ]
+        },
+        "securityOutcome": {
+          "type": "string",
+          "description": "Specifies whether traffic is denied by ACL rules at any hop along the path.\n*PERMITTED*: All ACLs along the path permitted traffic to flow through.\n*DENIED*: Traffic was dropped by ACLs at some hop along the path. Note that the ACL drop may not always occur at the last hop since search results are computed in permit all mode.",
+          "enum": [
+            "PERMITTED",
+            "DENIED"
+          ]
+        },
+        "hops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PathHop"
+          }
+        }
+      },
+      "title": "Path"
+    },
+    "PathHop": {
+      "type": "object",
+      "properties": {
+        "behaviors": {
+          "type": "array",
+          "description": "Specifies the forwarding behaviors experienced by traffic at the device.\n*L2*: Forwarded at layer 2.\n*L3*: Routed at layer 3.\n*NAT*: NAT transformations applied.\n*PBR*: Forwarded using Policy-Based Routing.\n*ACL_PERMIT*: ACLs were applied to traffic at the device and the traffic was permitted.\n*ACL_DENY*: ACLs were applied to traffic at the device and the traffic was dropped.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "L2",
+              "L3",
+              "NAT",
+              "PBR",
+              "ACL_PERMIT",
+              "ACL_DENY"
+            ]
+          }
+        },
+        "deviceName": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "ROUTER",
+            "SWITCH",
+            "VSWITCH",
+            "FIREWALL",
+            "LOADBALANCER",
+            "BUNDLED_ROUTER",
+            "CIRCUIT",
+            "L2_VPN_SERVICE",
+            "MPLS_VPN_SERVICE",
+            "INTERNET_SERVICE",
+            "HYPERVISOR",
+            "CONTROLLER",
+            "WAN_OPTIMIZER",
+            "OPENFLOW_SWITCH",
+            "SD_WAN",
+            "AWS_CLOUD",
+            "AWS_SUBNET",
+            "AWS_RT",
+            "AWS_INTERNET_GW",
+            "AWS_NAT_GW",
+            "AWS_VPN_GW",
+            "AWS_LB",
+            "AWS_DIRECT_CONNECT_GW",
+            "AWS_TRANSIT_GW",
+            "EDGE_VM",
+            "AZURE_CLOUD",
+            "AZURE_SUBNET",
+            "AZURE_VNET",
+            "AZURE_VNET_GW",
+            "AZURE_FIREWALL",
+            "AZURE_APP_GW",
+            "GCP_CLOUD",
+            "GCP_RT",
+            "GCP_SUBNET",
+            "GCP_LB",
+            "GCP_TRAFFIC_DIRECTOR",
+            "GCP_VPN_GW",
+            "GCP_NAT_GW"
+          ]
+        },
+        "egressInterface": {
+          "type": "string",
+          "description": "the physical interface name, where traffic exited the device.\nNull if this is the last hop and traffic did not exit the device."
+        },
+        "ingressInterface": {
+          "type": "string",
+          "description": "the physical interface name, where traffic entered the device"
+        },
+        "networkFunctions": {
+          "$ref": "#/definitions/NetworkFunctions"
+        }
+      },
+      "title": "PathHop"
+    },
+    "PathInfo": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Path"
+          }
+        },
+        "totalHits": {
+          "$ref": "#/definitions/TotalHits"
+        }
+      },
+      "title": "PathInfo"
+    },
+    "PathSearchBulkRequest": {
+      "type": "object",
+      "required": [
+        "queries"
+      ],
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PathSearchQuery"
+          }
+        },
+        "intent": {
+          "type": "string",
+          "description": "Specifies the intent for the search. Default PREFER_DELIVERED.\n*PREFER_VIOLATIONS*: Prefer paths that result in the traffic not getting delivered, e.g. drops, blackholes, loops. An example usage is while trying to evaluate if the specified traffic always gets delivered to the destination along all path choices.\n*PREFER_DELIVERED*: Prefer paths that result in the traffic getting delivered. An example usage is while trying to evaluate if traffic gets delivered to the destination along any path choice.\n*VIOLATIONS_ONLY*: Search for paths where traffic is not delivered to the destination.\n*SINGLE_BEST*: (Deprecated) Same as \"PREFER_DELIVERED\" with a maximum of 1 result\nand 0 or 1 return path results.",
+          "enum": [
+            "PREFER_VIOLATIONS",
+            "PREFER_DELIVERED",
+            "VIOLATIONS_ONLY",
+            "SINGLE_BEST"
+          ]
+        },
+        "maxCandidates": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the limit on the number of search results computed, before applying any ranking criteria. Permitted range = 1 to 10,000. Default 5,000."
+        },
+        "maxResults": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the limit on the number of search results returned by the API. First, the platform computes up to maxCandidates results that match the search criteria. Then they are sorted by various ranking criteria. A key ranking factor is path length, preferring longer paths (greatest reach) in the network over shorter ones. Finally, the API limits the number of returned search results to maxResults. Permitted range = 1 to maxCandidates. Default 1."
+        },
+        "maxReturnPathResults": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the limit on the number of return path search results. Permitted range = 0 to 10,000. Default 0. Multicast (*, G) and (S, G) queries will always return 0 return path results regardless of this value."
+        },
+        "maxSeconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "the timeout duration per search query. Permitted range = 1 to 600. Default 30."
+        },
+        "maxOverallSeconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "the overall timeout duration. Permitted range = 1 to 7,200. Default equal to the timeout duration for a single query."
+        },
+        "includeNetworkFunctions": {
+          "type": "boolean",
+          "description": "If true, the response includes detailed forwarding info for each hop.\nNote: Setting this to true increases the API response time."
+        }
+      },
+      "title": "PathSearchBulkRequest"
+    },
+    "PathSearchQuery": {
+      "type": "object",
+      "required": [
+        "dstIp",
+        "srcIp"
+      ],
+      "properties": {
+        "srcIp": {
+          "type": "string",
+          "description": "the source IP address or subnet of packets entering the network. For multicast (*, G) paths, set srcIp = G (multicast group address)."
+        },
+        "dstIp": {
+          "type": "string",
+          "description": "the destination IP address or subnet of packets entering the network. For multicast (*, G) paths, set dstIp = G (multicast group address)."
+        },
+        "ipProto": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the IP protocol",
+          "minimum": 0,
+          "maximum": 255,
+          "exclusiveMinimum": false,
+          "exclusiveMaximum": false
+        },
+        "srcPort": {
+          "type": "string",
+          "description": "the L4 source port, like \"80\" or a range \"8080-8088\""
+        },
+        "dstPort": {
+          "type": "string",
+          "description": "the L4 destination port, like \"80\" or a range \"8080-8088\""
+        },
+        "icmpType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the ICMP type. Can be specified only when ipProto = 1.",
+          "minimum": 0,
+          "maximum": 255,
+          "exclusiveMinimum": false,
+          "exclusiveMaximum": false
+        }
+      },
+      "title": "PathSearchQuery"
+    },
+    "PathSearchResponse": {
+      "type": "object",
+      "properties": {
+        "srcIpLocationType": {
+          "type": "string",
+          "description": "Specifies the location discovery method for source IP.\nThe enum values are ordered from most precise to least precise discovery method.\n*HOST*: The IP corresponds to discovered host(s).\n*INTERFACE*: The IP is a configured IP address of one or more device interfaces.\n*INTERFACE_ATTACHED_SUBNET*: The IP falls within the attached subnet of L3 interface(s).\n*INTERNET*: The IP is in the public internet and was located at the network's Internet Node. This discovery method is only applicable when an Internet Node is configured in the network.\n*ROUTE*: The IP was located based on injected routes in the network.\n*MULTICAST*: The IP is a multicast group address. This discovery method is used to locate the rendezvous points of the multicast group and use their IP addresses as IP source.",
+          "enum": [
+            "HOST",
+            "INTERFACE",
+            "INTERFACE_ATTACHED_SUBNET",
+            "INTERNET",
+            "ROUTE",
+            "MULTICAST"
+          ]
+        },
+        "dstIpLocationType": {
+          "type": "string",
+          "description": "Specifies the location discovery method for destination IP.\nThe enum values are ordered from most precise to least precise discovery method.\n*HOST*: The IP corresponds to discovered host(s).\n*INTERFACE*: The IP is a configured IP address of one or more device interfaces.\n*INTERFACE_ATTACHED_SUBNET*: The IP falls within the attached subnet of L3 interface(s).\n*NAT*: The IP gets NAT'd in the network. The IP may either correspond directly to a VIP on a load balancer or a NAT'd IP on other devices such as routers. This discovery method is only used to locate destination IP addresses. NAT’d IP addresses are recursively resolved to determine where traffic to a given destination IP must be delivered in the network.\n*INTERNET*: The IP is in the public internet and was located at the network's Internet Node. This discovery method is only applicable when an Internet Node is configured in the network.\n*ROUTE*: The IP was located based on injected routes in the network.\n*MULTICAST*: The IP is a multicast group address.",
+          "enum": [
+            "HOST",
+            "INTERFACE",
+            "INTERFACE_ATTACHED_SUBNET",
+            "NAT",
+            "INTERNET",
+            "ROUTE",
+            "MULTICAST"
+          ]
+        },
+        "info": {
+          "$ref": "#/definitions/PathInfo"
+        },
+        "returnPathInfo": {
+          "$ref": "#/definitions/PathInfo"
+        },
+        "timedOut": {
+          "type": "boolean"
+        },
+        "queryUrl": {
+          "type": "string",
+          "description": "A Forward application URL at which this path search can be explored or refined interactively"
+        }
+      },
+      "title": "PathSearchResponse"
+    },
+    "PredefinedCheck": {
+      "title": "PredefinedCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "params": {
+              "$ref": "#/definitions/JsonNode"
+            },
+            "predefinedCheckType": {
+              "type": "string",
+              "enum": [
+                "BGP_NEIGHBOR_ADJACENCY",
+                "BGP_ROUTER_ID",
+                "BGP_ROUTE_CONSISTENCY",
+                "BGP_VPC_PARAMETER_CONSISTENCY",
+                "EBGP_SELECTION_OVER_IBGP",
+                "BGP_COMMUNITY_LIST",
+                "NEXT_HOP_REACHABILITY",
+                "NO_LOOP",
+                "SHORTEST_PATH",
+                "IP_UNIQUENESS",
+                "HOSTNAME_CONSISTENCY",
+                "HOSTNAME_UNIQUENESS",
+                "VLAN_CONSISTENCY",
+                "MTU_CONSISTENCY",
+                "PORT_CHANNEL_CONSISTENCY",
+                "DUPLEX_CONSISTENCY",
+                "LINK_SPEED_CONSISTENCY",
+                "SOFTWARE_VERSION_CONSISTENCY",
+                "TRUNK_INTERFACE_WHITELIST",
+                "VLAN_EXISTENCE",
+                "LEARNED_MAC_CONSISTENCY",
+                "FHRP_PEERING",
+                "VPC_PARAMETER_CONSISTENCY",
+                "VPC_INTERFACE_PARAMETER_CONSISTENCY",
+                "VPC_DEDICATED_KEEPALIVE_LINK",
+                "VPC_ROLE_PRIORITY",
+                "SSH_RSA_KEY_LENGTH",
+                "VPC_STP_PRIORITY",
+                "VPC_MST_REGION_CONSISTENCY"
+              ]
+            }
+          },
+          "title": "PredefinedCheck"
+        }
+      ]
+    },
+    "QueryStringCheck": {
+      "title": "QueryStringCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "forRequest": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "title": "QueryStringCheck"
+        }
+      ]
+    },
+    "ReachabilityCheck": {
+      "title": "ReachabilityCheck",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CheckDefinition"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "checkType": {
+              "type": "string",
+              "enum": [
+                "Isolation",
+                "Reachability",
+                "Existential",
+                "QueryStringBased",
+                "Predefined",
+                "NQE"
+              ]
+            },
+            "filters": {
+              "$ref": "#/definitions/StructuredQuery"
+            },
+            "noiseTypes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "WRONG_GATEWAY",
+                  "INADMISSIBLE",
+                  "NETWORK_OR_BROADCAST_ADDRESS",
+                  "TO_L2_INTERFACE_MAC",
+                  "IP_SRC_SPOOF",
+                  "GLEAN"
+                ]
+              }
+            }
+          },
+          "title": "ReachabilityCheck"
+        }
+      ]
+    },
+    "SnapshotMeta": {
+      "type": "object",
+      "properties": {
+        "creationDateMillis": {
+          "type": "string",
+          "format": "date-time",
+          "example": 1569001234567
+        },
+        "id": {
+          "type": "string"
+        },
+        "isDraft": {
+          "type": "boolean",
+          "example": false
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentSnapshotId": {
+          "type": "string"
+        },
+        "processedAtMillis": {
+          "type": "string",
+          "format": "date-time",
+          "example": 1569003456789
+        },
+        "processingStatus": {
+          "type": "string",
+          "example": "OK",
+          "enum": [
+            "DRAFT_NOT_PROCESSED",
+            "SAVING_SNAPSHOT_FILES",
+            "READY_FOR_INITIAL_PROCESSING",
+            "READY_FOR_DRAFT_PROCESSING",
+            "REPROCESSING_STARTED",
+            "SUPPORT_VERIFIER_WARNINGS",
+            "PROCESSING_FAILURE",
+            "OK",
+            "CANCELED_DURING_PARSING"
+          ]
+        },
+        "processingTrigger": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "COLLECTION",
+            "IMPORT",
+            "REPROCESS",
+            "FORK"
+          ]
+        },
+        "snapshotCollectionStatus": {
+          "type": "string",
+          "example": "OK",
+          "enum": [
+            "ERROR",
+            "INCOMPLETE",
+            "OK"
+          ]
+        },
+        "supportVerifierStatus": {
+          "type": "string",
+          "example": "NO_WARNINGS",
+          "enum": [
+            "NOT_ANALYZED",
+            "NO_WARNINGS",
+            "WARNINGS_DISMISSED"
+          ]
+        }
+      },
+      "title": "SnapshotMeta"
+    },
+    "SnapshotMetrics": {
+      "type": "object",
+      "properties": {
+        "collectionConcurrency": {
+          "type": "integer",
+          "format": "int32",
+          "example": 16
+        },
+        "collectionDuration": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1234
+        },
+        "collectionFailures": {
+          "type": "object",
+          "description": "Possible device error types during collection \n*UNKNOWN*: Unknown error\n*CONNECTION_TIMEOUT*: Connection to device timed out\n*CONNECTION_REFUSED*: Connection to device refused\n*AUTHENTICATION_FAILED*: Authentication failed\n*KEY_EXCHANGE_FAILED*: Key exchange failed\n*AUTHORIZATION_FAILED*: Authorization failed\n*AVI_SHELL_AUTH_FAILED*: Avi authentication failed\n*AVI_CONTROLLER_WITHOUT_HEALTHY_SERVICE_ENGINES*: No Avi Service Engines found\n*NETWORK_UNREACHABLE*: Network not reachable\n*IO_ERROR*: I/O error\n*SESSION_CLOSED*: Session closed unexpectedly\n*STATE_COLLECTION_FAILED*: State collection failed\n*JUMP_SERVER_CONNECTION_TIMEOUT*: Jump server timed out\n*JUMP_SERVER_PASSWORD_AUTH_FAILED*: Jump server auth failed\n*JUMP_SERVER_CONNECTION_FAILED*: Jump server connection refused\n*JUMP_SERVER_KEY_EXCHANGE_FAILED*: Jump server key exchange failed\n*PROXY_SERVER_PING_FAILED*: Proxy ping failed\n*PROXY_SERVER_PORT_REACHABILITY_FAILED*: Proxy port not reachable\n*PROXY_SERVER_CONNECTION_FAILED*: Proxy connection refused\n*PROXY_SERVER_AUTHENTICATION_FAILED*: Proxy authentication failed\n*PRIV_PASSWORD_ERROR*: Privileged password failed\n*UNSUPPORTED_VERSION*: Unsupported version\n*DEVICE_TYPE_UNDETECTED*: Undetected device type\n*WARN_TYPE_MISMATCH*: Device type mismatch\n*DEVICE_IS_CHILD_CONTEXT*: Parent context required\n*MANAGER_COLLECTOR_NOT_FOUND*: Collector manager error\n*INCOMPLETE_SETUP*: Incomplete setup\n*COLLECTION_NOT_FOUND*: Collection not found\n*INFINITE_LOOP_IN_COMMAND_OUTPUT*: Collection stuck in loop\n*MISSING_FILE*: File is missing\n*UNSUPPORTED_VENDOR*: Vendor not supported\n*COMMAND_DISABLED*: Required command is disabled\n*APIC_CONFIG_COLLECTION_FAILED*: APIC config collection failed\n*UNEXPECTED_KEY_EXCHANGE_MESSAGE*: Unexpected Key-Exchange message\n*UNDISCOVERED_ACI_FABRIC*: ACI fabric node was not discovered by APIC\n*SLOW_READ_RATE_DETECTED*: Read rate from the remote peer is too low\n*COLLECTION_TIMED_OUT*: Collection timed out\n*COLLECTION_CANCELED*: Collection canceled by user\n*OPERATION_TIMED_OUT*: Operation timed out\n*CERTIFICATE_CHECK_FAILED*: Certificate cannot be verified\n",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "creationDateMillis": {
+          "type": "string",
+          "format": "date-time",
+          "example": 1234567
+        },
+        "hostComputationStatus": {
+          "type": "string",
+          "example": "SUCCESS",
+          "description": "Host computation status",
+          "enum": [
+            "UNKNOWN",
+            "FAILURE",
+            "SUCCESS",
+            "CANCELED"
+          ]
+        },
+        "ipLocationIndexingStatus": {
+          "type": "string",
+          "example": "SUCCESS",
+          "description": "IP location indexing status",
+          "enum": [
+            "UNKNOWN",
+            "FAILURE",
+            "SUCCESS",
+            "CANCELED"
+          ]
+        },
+        "jumpServerCollectionConcurrency": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "l2IndexingStatus": {
+          "type": "string",
+          "example": "SUCCESS",
+          "description": "L2 elements (vlans, LAN segments etc.) indexing status",
+          "enum": [
+            "UNKNOWN",
+            "FAILURE",
+            "SUCCESS",
+            "CANCELED"
+          ]
+        },
+        "needsReprocessing": {
+          "type": "boolean",
+          "description": "Indicates if the Snapshot needs to be reprocessed"
+        },
+        "numCollectionFailureDevices": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numParsingFailureDevices": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numSuccessfulDevices": {
+          "type": "integer",
+          "format": "int32",
+          "example": 401
+        },
+        "parsingFailures": {
+          "type": "object",
+          "description": "Possible error types during processing \n*DEVICE_OVERUSAGE*: License limit exceeded\n*MISSING_SIGNATURE*: Missing signature\n*DUPLICATE*: Duplicate device\n*PARSER_EXCEPTION*: Couldn't be parsed\n*UNSUPPORTED_VENDOR*: Vendor not supported\n",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "pathSearchIndexingStatus": {
+          "type": "string",
+          "example": "SUCCESS",
+          "description": "End-to-end path indexing status",
+          "enum": [
+            "UNKNOWN",
+            "FAILURE",
+            "SUCCESS",
+            "CANCELED"
+          ]
+        },
+        "processingDuration": {
+          "type": "integer",
+          "format": "int64",
+          "example": 5678
+        },
+        "searchIndexingStatus": {
+          "type": "string",
+          "example": "SUCCESS",
+          "description": "Object search indexing status",
+          "enum": [
+            "UNKNOWN",
+            "FAILURE",
+            "SUCCESS",
+            "CANCELED"
+          ]
+        },
+        "snapshotId": {
+          "type": "string"
+        }
+      },
+      "title": "SnapshotMetrics"
+    },
+    "SortOrder": {
+      "type": "object",
+      "required": [
+        "columnName"
+      ],
+      "properties": {
+        "columnName": {
+          "type": "string",
+          "example": "deviceName",
+          "description": "The name of a column to sort on."
+        },
+        "order": {
+          "type": "string",
+          "description": "(optional) Either \"ASC\" or \"DESC\" to sort ascending or descending, respectively. Defaults to \"ASC\".",
+          "enum": [
+            "ASC",
+            "DESC"
+          ]
+        }
+      },
+      "title": "SortOrder"
+    },
+    "TextPosition": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Position on the line (by number of characters, starting at 0)"
+        },
+        "line": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Line number (starting at 0)"
+        }
+      },
+      "title": "TextPosition"
+    },
+    "TextRegion": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "description": "The region's starting position (starting at (0, 0)).",
+          "$ref": "#/definitions/TextPosition"
+        },
+        "end": {
+          "description": "The region's ending position.",
+          "$ref": "#/definitions/TextPosition"
+        }
+      },
+      "title": "TextRegion"
+    },
+    "TopologyLayout": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceNode"
+          }
+        }
+      },
+      "title": "TopologyLayout"
+    },
+    "TopologyLink": {
+      "type": "object",
+      "properties": {
+        "sourcePort": {
+          "type": "string"
+        },
+        "targetPort": {
+          "type": "string"
+        }
+      },
+      "title": "TopologyLink"
+    },
+    "TotalHits": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specifies the type of total hits.\n*LOWER_BOUND*: There may be additional hits that were not included in the results either because the requested number of hits were found, or the request timed out.\n*EXACT*: There are exactly this many hits.",
+          "enum": [
+            "LOWER_BOUND",
+            "EXACT"
+          ]
+        },
+        "value": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "TotalHits",
+      "description": "Number of ways in which traffic matching the search criteria is forwarded in the network. Multiple ECMP path choices for traffic lead to separate results. In addition, depending on the scope of query terms, there might be multiple results along a single path. For example a search without IP protocol or destination port restrictions can result in multiple results along a single device path if there are different ACLs that permit or deny traffic to different destination ports."
+    },
+    "VlanTaggedLink": {
+      "type": "object",
+      "properties": {
+        "port1": {
+          "type": "string"
+        },
+        "port2": {
+          "type": "string"
+        },
+        "vlan": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "VlanTaggedLink"
+    }
+  }
+}
