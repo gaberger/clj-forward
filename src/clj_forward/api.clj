@@ -19,7 +19,8 @@
 ;                                           :name s/Str}}}]))
 
 (defn create-fwd-context [{:keys [server version user password debug insecure]}]
-  (bootstrap-openapi server (parse-string (slurp (io/resource (format "api-%s.json" version))))
+  (let [api-spec (parse-string (slurp (io/resource (format "api-%s.json" version))))]
+  (bootstrap-openapi server api-spec)
                      (add-custom-header user password debug insecure)))
 
 
